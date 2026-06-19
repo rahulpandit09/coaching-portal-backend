@@ -16,13 +16,13 @@ from app.routers.Teacher import faculty_router
 from app.routers.Courses.course import router as course_router
 from app.routers.Batchs import batch
 
-
-
 # app = FastAPI(title="Coaching Portal API")
 app = FastAPI(
     title="Coaching Portal API",
     openapi_version="3.0.3"
 )
+
+
 
 # CORS Configuration
 allowed_origins_str = os.getenv("ALLOWED_ORIGINS", "")

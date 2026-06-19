@@ -4,10 +4,12 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.course import Course
 from app.schemas.course_schema import CourseCreate, CourseResponse
+from app.core.security import get_current_user
 
 router = APIRouter(
     prefix="/courses",
-    tags=["Courses"]
+    tags=["Courses"],
+    dependencies=[Depends(get_current_user)]
 )
 
 @router.post("/", response_model=CourseResponse)

@@ -6,8 +6,13 @@ from app.database import get_db
 from app.crud.Batchs import batch_crud   # ✅ NEW
 from app.models.Batchs.batch import Batch
 from app.schemas.Batchs.batch import *
+from app.core.security import admin_required
 
-router = APIRouter(prefix="/admin/batches", tags=["Batches"])
+router = APIRouter(
+    prefix="/admin/batches",
+    tags=["Batches"],
+    dependencies=[Depends(admin_required)]
+)
 
 
 # ─── Helper ─────────────────────────────

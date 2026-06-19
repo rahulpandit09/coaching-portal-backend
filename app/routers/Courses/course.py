@@ -10,11 +10,12 @@ from app.schemas.Courses.course import (
     CourseStatusUpdate,
 )
 from app.crud.Courses import course as crud
-
+from app.core.security import get_current_user
 
 router = APIRouter(
     prefix="/api/courses",
     tags=["Teacher Courses Assign"],
+    dependencies=[Depends(get_current_user)]
 )
 
 

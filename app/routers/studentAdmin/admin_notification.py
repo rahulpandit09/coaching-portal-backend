@@ -3,8 +3,13 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models.admin.notification import Notification
 from app.schemas.admin.notification import NotificationCreate
+from app.core.security import get_current_user
 
-router = APIRouter(prefix="/admin/notifications", tags=["Admin Notifications"])
+router = APIRouter(
+    prefix="/admin/notifications",
+    tags=["Admin Notifications"],
+    dependencies=[Depends(get_current_user)]
+)
 
 
 # CREATE NOTIFICATION

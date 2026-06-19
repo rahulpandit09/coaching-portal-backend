@@ -5,8 +5,13 @@ from app.database import get_db
 from app.models.admin.student import Student
 from app.models.admin.payment import Payment
 from datetime import datetime, timedelta
+from app.core.security import admin_required
 
-router = APIRouter(prefix="/admin/dashboard", tags=["Admin Dashboard"])
+router = APIRouter(
+    prefix="/admin/dashboard",
+    tags=["Admin Dashboard"],
+    dependencies=[Depends(admin_required)]
+)
 
 
 # SUMMARY API (FULL VERSION)
