@@ -7,6 +7,9 @@ from app.models.Student.RegistrationForm import RegistrationStudent
 from app.models.user import User
 from app.utils.hashing import hash_password
 
+# Create tables if they don't exist
+Base.metadata.create_all(bind=engine)
+
 db = SessionLocal()
 
 existing_admin = db.query(User).filter(User.email == "admin@gmail.com").first()

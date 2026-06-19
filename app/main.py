@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
@@ -23,29 +24,30 @@ app = FastAPI(
     openapi_version="3.0.3"
 )
 
-# CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
+# CORS Configuration
+allowed_origins_str = os.getenv("ALLOWED_ORIGINS", "")
+if allowed_origins_str:
+    allowed_origins = [origin.strip() for origin in allowed_origins_str.split(",") if origin.strip()]
+else:
+    allowed_origins = [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         "http://localhost:3000",
         "http://127.0.0.1:3000",
-    ],
-    allow_credentials=True,
+    ]
+
+# If allowed_origins contains "*", allow_credentials MUST be False.
+allow_credentials = True
+if "*" in allowed_origins:
+    allow_credentials = False
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=allow_credentials,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-# #this is a production leve 
-# app.add_middleware(
-#     CORSMiddleware,
-#     allow_origins=["*"],  # for learning
-#     allow_credentials=True,
-#     allow_methods=["*"],
-#     allow_headers=["*"],
-# )
 
 
 
