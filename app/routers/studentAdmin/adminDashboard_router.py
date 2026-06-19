@@ -4,14 +4,15 @@ from sqlalchemy import func, extract
 from datetime import datetime
 from app.database import SessionLocal
 from app.models.admin.adminDashboard_model import adminDashboardStudent
-from app.core.security import get_current_user
+from app.core.security import get_current_user, admin_required
 from sqlalchemy import text
 from app.models.user import User
 from app.database import get_db
 
 router = APIRouter(
     prefix="/admin/adminDashboard_student",
-    tags=["adminDashboard_student"]
+    tags=["adminDashboard_student"],
+    dependencies=[Depends(admin_required)]
 )
 
 @router.get("/dashboard")

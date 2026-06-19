@@ -5,10 +5,12 @@ from app.database import SessionLocal
 from app.crud.Teacher import faculty_crud
 from app.schemas.Teacher.faculty_schema import FacultyAssignSchema
 from app.models.Teacher.faculty_module import FacultyTeacher
+from app.core.security import admin_required
 
 router = APIRouter(
     prefix="/admin",
-    tags=["Faculty Management"]
+    tags=["Faculty Management"],
+    dependencies=[Depends(admin_required)]
 )
 
 

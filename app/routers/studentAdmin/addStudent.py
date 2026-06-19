@@ -4,10 +4,12 @@ from app.database import get_db
 from app.models.admin.addStudent import AdminStudent
 from app.models.admin.fee import Fee
 from app.schemas.admin.addStudent_schema import StudentCreate
+from app.core.security import admin_required
 
 router = APIRouter(
     prefix="/admin/students",
-    tags=["Admin Students"]
+    tags=["Admin Students"],
+    dependencies=[Depends(admin_required)]
 )
 
 # ============================================================
