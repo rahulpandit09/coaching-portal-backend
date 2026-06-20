@@ -14,7 +14,7 @@ router = APIRouter(
 )
 
 # --------------------------------------------------
-# 1️⃣ VIEW ALL ACTIVE COURSES
+# 1️VIEW ALL ACTIVE COURSES
 # --------------------------------------------------
 @router.get("/courses")
 def view_courses(db: Session = Depends(get_db)):
@@ -22,7 +22,7 @@ def view_courses(db: Session = Depends(get_db)):
 
 
 # --------------------------------------------------
-# 2️⃣ ENROLL IN A COURSE
+# 2️ ENROLL IN A COURSE
 # --------------------------------------------------
 @router.post("/enroll")
 def enroll_course(
@@ -61,7 +61,7 @@ def enroll_course(
 
 
 # --------------------------------------------------
-# 3️⃣ VIEW MY ENROLLED COURSES
+# 3️ VIEW MY ENROLLED COURSES
 # --------------------------------------------------
 @router.get("/my-courses")
 def my_courses(
@@ -82,7 +82,7 @@ def my_courses(
 
 
 # --------------------------------------------------
-# 4️⃣ STUDENT PROFILE
+# 4️STUDENT PROFILE
 # --------------------------------------------------
 @router.get("/me")
 def student_profile(current_user: User = Depends(get_current_user)):

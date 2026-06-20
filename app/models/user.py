@@ -16,6 +16,7 @@ class User(Base):
     reset_token = Column(String, nullable=True)
     reset_token_expiry = Column(DateTime, nullable=True)
     last_login = Column(DateTime, nullable=True)
+    profile_image = Column(String, nullable=True)
 
     # Relationship
     student = relationship("RegistrationStudent", back_populates="user", uselist=False)
