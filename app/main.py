@@ -15,6 +15,7 @@ from app.routers.studentAdmin import admin_notification
 from app.routers.Teacher import faculty_router
 from app.routers.Courses.course import router as course_router
 from app.routers.Batchs import batch
+from app.routers import profile_router
 
 # app = FastAPI(title="Coaching Portal API")
 app = FastAPI(
@@ -71,6 +72,7 @@ app.include_router(adminDashboard_router.router)
 app.include_router(faculty_router.router)
 app.include_router(course_router)  
 app.include_router(batch.router)
+app.include_router(profile_router.router)
 
 
 
