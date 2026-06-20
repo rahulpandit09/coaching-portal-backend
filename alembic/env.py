@@ -29,6 +29,17 @@ from app.models.test import Test
 # access to the values within the .ini file in use.
 config = context.config
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+# Override the sqlalchemy.url from env if present (useful for Render/prod)
+db_url = os.getenv("DATABASE_URL")
+if db_url:
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
+    config.set_main_option("sqlalchemy.url", db_url)
+
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
