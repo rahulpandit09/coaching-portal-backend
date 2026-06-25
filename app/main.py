@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
 from app.routers import auth, course, student, admin
-
 from app.routers.Student import RegistrationForm
 from app.routers.studentAdmin import addStudent
 from app.routers.studentAdmin import admin_dashboard
@@ -16,14 +15,11 @@ from app.routers.Teacher import faculty_router
 from app.routers.Courses.course import router as course_router
 from app.routers.Batchs import batch
 from app.routers import profile_router
-
 # app = FastAPI(title="Coaching Portal API")
 app = FastAPI(
     title="Coaching Portal API'S",
     openapi_version="3.0.3"
 )
-
-
 
 # CORS Configuration
 allowed_origins_str = os.getenv("ALLOWED_ORIGINS", "")
@@ -51,13 +47,10 @@ app.add_middleware(
 )
 
 
-
-
 # # Create Tables on Startup
 @app.on_event("startup")
 def on_startup():
     Base.metadata.create_all(bind=engine)
-
 
 # Include Routers
 app.include_router(auth.router)
