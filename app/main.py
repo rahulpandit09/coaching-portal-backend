@@ -19,7 +19,7 @@ from app.routers import profile_router
 
 # app = FastAPI(title="Coaching Portal API")
 app = FastAPI(
-    title="Coaching Portal API",
+    title="Coaching Portal API'S",
     openapi_version="3.0.3"
 )
 
