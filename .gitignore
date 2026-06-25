@@ -1,6 +1,24 @@
-.env
-venv/
+# Python cache
 __pycache__/
 *.pyc
-.pytest_cache/
+*.pyo
+
+# Virtual environment
+venv/
+ENV/
+env/
+
+# Environment variables
+.env
+.env.*
+
+# Database
+*.sqlite3
+
+# VS Code / IDE
 .vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
