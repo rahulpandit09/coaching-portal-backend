@@ -1,6 +1,3 @@
-# app/schemas/profile_schema.py
-
-from string import templatelib
 from pydantic import BaseModel
 from typing import Optional
 

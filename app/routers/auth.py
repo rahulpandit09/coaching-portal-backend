@@ -17,27 +17,6 @@ from datetime import datetime
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
-# @router.post("/register")
-# def register(user: UserCreate, db: Session = Depends(get_db)):
-#     if db.query(User).filter(User.email == user.email).first():
-#         raise HTTPException(status_code=400, detail="Email already exists")
-
-#     if db.query(User).filter(User.username == user.username).first():
-#         raise HTTPException(status_code=400, detail="Username already exists")
-
-#     new_user = User(
-#         full_name=user.full_name,
-#         email=user.email,
-#         username=user.username,
-#         password=hash_password(user.password),
-#         role="student"
-#     )
-
-#     db.add(new_user)
-#     db.commit()
-
-#     return {"message": "User registered successfully"}
-
 @router.post("/register")
 def register(user: UserCreate, db: Session = Depends(get_db)):
 
@@ -52,7 +31,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
         username=user.username,
         email=user.email,
         password=hash_password(user.password),
-        role="student"   # 🔒 Always student
+        role="student"   # Always student
     )
 
     db.add(new_user)
@@ -67,9 +46,6 @@ def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db)
 ):
-    # user = db.query(User).filter(User.email == form_data.username).first()
-    # user = db.query(User).filter(or_(    User.email == form_data.username, User.username == form_data.username)).first()
-    # user = db.query(User).filter(or_(    User.email == form_data.username, User.full_name == form_data.username)).first()
     user = db.query(User).filter(or_(User.email == form_data.username, User.username == form_data.username)).first()
 
 

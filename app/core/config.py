@@ -12,6 +12,6 @@ ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
 
 # Swagger UI credentials
-DOCS_USERNAME = os.getenv("DOCS_USERNAME", "admin")
-DOCS_PASSWORD = os.getenv("DOCS_PASSWORD", "admin123")
+DOCS_USERNAME = os.getenv("DOCS_USERNAME", "Admin_1")
+DOCS_PASSWORD = os.getenv("DOCS_PASSWORD", "Admin@123")
 
