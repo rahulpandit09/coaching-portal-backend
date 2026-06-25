@@ -10,15 +10,13 @@ from app.dependencies.auth import get_current_user
 
 router = APIRouter(prefix="/student-registration", tags=["Student Registration"])
 
-
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
-
-
+        
 # ✅ REGISTER (Only Student Role)
 @router.post("/register")
 def register_student(

@@ -1,6 +1,39 @@
-.env
-venv/
+# Python cache
 __pycache__/
 *.pyc
-.pytest_cache/
+*.pyo
+
+# Virtual environment
+venv/
+<<<<<<< HEAD
+ENV/
+env/
+
+# Environment variables
+.env
+.env.*
+
+# Database
+*.sqlite3
+
+# VS Code / IDE
 .vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+=======
+
+# Environment variables
+.env
+
+# Alembic cache
+*.sqlite3
+
+# VS Code
+.vscode/
+
+# macOS / Windows
+.DS_Store
+>>>>>>> c0bdcf93a2ab91d4b61da57bcd3d2073b5941d8f
