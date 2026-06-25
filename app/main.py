@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
-from app.routers import auth, course, student, admin
+from app.routers import auth, course, student, admin, sidebar
 
 from app.routers.Student import RegistrationForm
 from app.routers.studentAdmin import addStudent
@@ -73,6 +73,7 @@ app.include_router(faculty_router.router)
 app.include_router(course_router)  
 app.include_router(batch.router)
 app.include_router(profile_router.router)
+app.include_router(sidebar.router)
 
 
 
