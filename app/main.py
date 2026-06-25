@@ -67,13 +67,10 @@ app.include_router(course_router)
 app.include_router(batch.router)
 app.include_router(profile_router.router)
 
-
-
 # Root Endpoint
 @app.get("/")
 def root():
     return {"message": "Coaching Portal Backend Running"}
-
 
 @app.get("/health")
 def health_check():
