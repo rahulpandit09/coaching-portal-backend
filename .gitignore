@@ -1,6 +1,19 @@
-.env
-venv/
+# Python cache
 __pycache__/
 *.pyc
-.pytest_cache/
+*.pyo
+
+# Virtual environment
+venv/
+
+# Environment variables
+.env
+
+# Alembic cache
+*.sqlite3
+
+# VS Code
 .vscode/
+
+# macOS / Windows
+.DS_Store
