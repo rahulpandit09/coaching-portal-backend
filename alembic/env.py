@@ -23,6 +23,7 @@ from app.models.enrollment import Enrollment
 from app.models.lecture import Lecture
 from app.models.result import Result
 from app.models.test import Test
+from app.models.sidebar import Sidebar
 
 
 # this is the Alembic Config object, which provides
