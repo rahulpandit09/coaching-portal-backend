@@ -1,3 +1,3 @@
-# python -m uvicorn app.main:app --reload
-# venv\Scripts\Activate
-# deactivate
+python -m uvicorn app.main:app --reload
+rahul.kashyaprp09@gmail.com
+deactivate
