@@ -1,19 +1,19 @@
 from pydantic import BaseModel
 from typing import Optional
-from datetime import datetime  # ✅ FIX 1
+from datetime import datetime 
 
 class CourseCreate(BaseModel):
     title: str
     description: Optional[str] = None
     price: float
     duration: Optional[int] = None
-    level: Optional[str] = None        # ✅ FIX 2 (leave → level)
+    level: Optional[str] = None        
     is_active: Optional[bool] = True
 
 
 class CourseResponse(CourseCreate):
     id: int
-    created_at: datetime               # ✅ FIX 3
+    created_at: datetime               
 
     class Config:
         from_attributes = True

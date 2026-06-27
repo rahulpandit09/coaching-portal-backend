@@ -15,3 +15,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
 DOCS_USERNAME = os.getenv("DOCS_USERNAME", "Admin_1")
 DOCS_PASSWORD = os.getenv("DOCS_PASSWORD", "Admin@123")
 
+# Gmail SMTP
+EMAIL_USER = os.getenv("EMAIL_USER")
+EMAIL_PASS = os.getenv("EMAIL_PASS")
+
