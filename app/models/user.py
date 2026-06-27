@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.database import Base
+from sqlalchemy import Column, Integer, String, DateTime, Boolean
 
 
 class User(Base):
@@ -12,11 +13,14 @@ class User(Base):
     username = Column(String(100), unique=True, index=True, nullable=False)
     email = Column(String(100), unique=True, index=True, nullable=False)
     password = Column(String(255), nullable=False)
-    role = Column(String(20), nullable=False)  # admin / teacher / student
+    role = Column(String(20), nullable=False)  
     reset_token = Column(String, nullable=True)
     reset_token_expiry = Column(DateTime, nullable=True)
     last_login = Column(DateTime, nullable=True)
     profile_image = Column(String, nullable=True)
+    otp_code = Column(String(6), nullable=True)
+    otp_expiry = Column(DateTime, nullable=True)
+    otp_verified = Column(Boolean, default=False)
 
     # Relationship
     student = relationship("RegistrationStudent", back_populates="user", uselist=False)
