@@ -26,8 +26,8 @@ def forgot_password_crud(email: str, db: Session):
 
     db.commit()
     #Send email for otp
-    # send_otp_email(email, otp)
-    print("OTP =", otp)
+    send_otp_email(email, otp)
+    #print("OTP =", otp)
 
     return {
         "message": "OTP sent successfully",
