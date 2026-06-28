@@ -28,8 +28,9 @@ Coaching Portal Team
     msg["To"] = receiver_email
 
     try:
-        # Use SMTP_SSL on port 465 instead of port 587
-        server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10)
+        # Force IPv4 by binding the source address to 0.0.0.0
+        # This fixes the 'Network is unreachable' Errno 101 on Render which lacks IPv6 routing
+        server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10, source_address=('0.0.0.0', 0))
 
         server.login(
             EMAIL_USER,
