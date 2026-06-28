@@ -28,9 +28,9 @@ Coaching Portal Team
     msg["To"] = receiver_email
 
     try:
-        # Force IPv4 by binding the source address to 0.0.0.0
-        # This fixes the 'Network is unreachable' Errno 101 on Render which lacks IPv6 routing
-        server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10, source_address=('0.0.0.0', 0))
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+
+        server.starttls()
 
         server.login(
             EMAIL_USER,
