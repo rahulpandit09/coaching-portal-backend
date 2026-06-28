@@ -8,7 +8,7 @@ from app.crud.profile_crud import (
 )
 
 # your auth dependency
-from app.dependencies.auth import get_current_user
+from app.core.security import get_current_user
 
 router = APIRouter(
     prefix="/profile",
