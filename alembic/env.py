@@ -8,21 +8,6 @@ from app.database import Base
 
 # import all models
 from app.models.user import User
-from app.models.admin.student import Student
-from app.models.Batchs.batch import Batch
-from app.models.admin.payment import Payment
-from app.models.admin.notification import Notification
-from app.models.course import Course
-from app.models.Courses.course import Course as TeacherCourse
-from app.models.admin.addStudent import AdminStudent
-from app.models.admin.fee import Fee
-from app.models.admin.adminDashboard_model import adminDashboardStudent
-from app.models.Student.RegistrationForm import RegistrationStudent
-from app.models.Teacher.faculty_module import FacultyTeacher
-from app.models.enrollment import Enrollment
-from app.models.lecture import Lecture
-from app.models.result import Result
-from app.models.test import Test
 from app.models.sidebar import Sidebar
 
 
