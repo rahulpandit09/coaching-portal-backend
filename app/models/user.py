@@ -21,6 +21,3 @@ class User(Base):
     otp_code = Column(String(6), nullable=True)
     otp_expiry = Column(DateTime, nullable=True)
     otp_verified = Column(Boolean, default=False)
-
-    # Relationship
-    student = relationship("RegistrationStudent", back_populates="user", uselist=False)

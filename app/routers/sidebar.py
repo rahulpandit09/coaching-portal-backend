@@ -22,8 +22,4 @@ def get_sidebar(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user)
 ):
-
-    return get_sidebar_by_role(
-        db,
-        current_user.role
-    )
+    return get_sidebar_by_role(db, current_user.role)

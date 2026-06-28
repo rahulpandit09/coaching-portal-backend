@@ -1,13 +1,7 @@
 from app.database import SessionLocal, Base, engine
-
-# IMPORTANT: import ALL models so SQLAlchemy registers them
-from app.models import user, course as course_model, lecture, enrollment, test, result
-from app.models.Student.RegistrationForm import RegistrationStudent
-
 from app.models.user import User
 from app.utils.hashing import hash_password
 
-# Create tables if they don't exist
 Base.metadata.create_all(bind=engine)
 
 db = SessionLocal()

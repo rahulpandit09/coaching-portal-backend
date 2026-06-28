@@ -2,19 +2,7 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
-from app.routers import auth, course, student, admin, sidebar
-
-from app.routers.Student import RegistrationForm
-from app.routers.studentAdmin import addStudent
-from app.routers.studentAdmin import admin_dashboard
-from app.routers.studentAdmin import adminDashboard_router
-from app.models import user, course as course_model, lecture, enrollment, test, result
-from app.models.admin.addStudent import AdminStudent
-from app.models.admin.fee import Fee
-from app.routers.studentAdmin import admin_notification
-from app.routers.Teacher import faculty_router
-from app.routers.Courses.course import router as course_router
-from app.routers.Batchs import batch
+from app.routers import auth, sidebar
 from app.routers import profile_router
 
 app = FastAPI(
@@ -59,17 +47,6 @@ def on_startup():
 
 # Include Routers
 app.include_router(auth.router)
-app.include_router(course.router)
-app.include_router(student.router)
-app.include_router(RegistrationForm.router)
-app.include_router(admin.router)
-app.include_router(addStudent.router)
-app.include_router(admin_dashboard.router)
-app.include_router(admin_notification.router)
-app.include_router(adminDashboard_router.router)
-app.include_router(faculty_router.router)
-app.include_router(course_router)
-app.include_router(batch.router)
 app.include_router(profile_router.router)
 app.include_router(sidebar.router)
 
