@@ -28,9 +28,8 @@ Coaching Portal Team
     msg["To"] = receiver_email
 
     try:
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-
-        server.starttls()
+        # Use SMTP_SSL on port 465 instead of port 587
+        server = smtplib.SMTP_SSL("smtp.gmail.com", 465, timeout=10)
 
         server.login(
             EMAIL_USER,
