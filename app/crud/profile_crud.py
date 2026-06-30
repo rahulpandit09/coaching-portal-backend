@@ -1,12 +1,9 @@
 import os
 import uuid
 import shutil
-
 from fastapi import HTTPException
 from sqlalchemy.exc import SQLAlchemyError
-
 from app.models.user import User
-
 
 def update_profile(db, current_user, full_name=None, file=None):
 

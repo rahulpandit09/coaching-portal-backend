@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.models.sidebar import Sidebar
+from app.models.sidebar_model import Sidebar
 
 
 def get_sidebar_by_role(

@@ -8,7 +8,8 @@ from app.database import Base
 
 # import all models
 from app.models.user import User
-from app.models.sidebar import Sidebar
+
+from app.models.sidebar_model import Sidebar
 
 
 # this is the Alembic Config object, which provides
