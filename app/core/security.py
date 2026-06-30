@@ -20,7 +20,6 @@ def get_current_user(
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: int = payload.get("user_id")
 
-        # FIX 1
         if not user_id:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
@@ -35,7 +34,6 @@ def get_current_user(
 
     user = db.query(User).filter(User.id == user_id).first()
 
-    # FIX 2
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
