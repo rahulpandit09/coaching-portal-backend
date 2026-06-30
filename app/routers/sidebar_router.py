@@ -5,7 +5,7 @@ from app.database import get_db
 from app.core.security import get_current_user
 
 from app.schemas.sidebar_schema import SidebarResponse
-from app.crud.sidebar import get_sidebar_by_role
+from app.crud.sidebar_crud import get_sidebar_by_role
 
 
 router = APIRouter(

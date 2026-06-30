@@ -6,12 +6,12 @@ from app.core.config import EMAIL_USER, EMAIL_PASS
 
 def send_otp_email(receiver_email: str, otp: str):
 
-    subject = "Password Reset OTP"
+    subject = "Reset Password OTP"
 
     body = f"""
 Hello,
 
-Your OTP for password reset is: {otp}
+Your OTP for reset password is: {otp}
 
 This OTP will expire in 60 seconds.
 

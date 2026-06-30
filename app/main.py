@@ -2,8 +2,9 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
-from app.routers import auth, sidebar
+from app.routers import auth
 from app.routers import profile_router
+from app.routers import sidebar_router
 
 app = FastAPI(
     title="Coaching Portal API'S",
@@ -48,7 +49,7 @@ def on_startup():
 # Include Routers
 app.include_router(auth.router)
 app.include_router(profile_router.router)
-app.include_router(sidebar.router)
+app.include_router(sidebar_router.router)
 
 # Root Endpoint
 @app.get("/")
