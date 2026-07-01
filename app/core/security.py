@@ -42,20 +42,36 @@ def get_current_user(
 
     return user
 
-
-def admin_required(user: User = Depends(get_current_user)):
-    if user.role != "admin":
-        raise HTTPException(status_code=403, detail="Admin only")
+def tutor_required(user: User = Depends(get_current_user)):
+    if user.role_id != 1:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Tutor only"
+        )
     return user
 
 
 def teacher_required(user: User = Depends(get_current_user)):
-    if user.role != "teacher":
-        raise HTTPException(status_code=403, detail="Teacher only")
+    if user.role_id != 2:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Teacher only"
+        )
+    return user
+
+def parent_required(user: User = Depends(get_current_user)):
+    if user.role_id != 3:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Parent only"
+        )
     return user
 
 
 def student_required(user: User = Depends(get_current_user)):
-    if user.role != "student":
-        raise HTTPException(status_code=403, detail="Student only")
+    if user.role_id != 4:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Student only"
+        )
     return user

@@ -62,7 +62,7 @@ def register(
         username=user.username,
         email=user.email,
         password=hash_password(user.password),
-        role="student"
+        role_id=4
     )
 
     db.add(new_user)
@@ -102,7 +102,7 @@ def login(
     access_token = create_access_token(
         {
             "user_id": user.id,
-            "role": user.role
+            "role_id": user.role_id
         },
         ACCESS_TOKEN_EXPIRE_MINUTES
     )
@@ -146,7 +146,7 @@ def refresh_token(
     new_access_token = create_access_token(
         {
             "user_id": user.id,
-            "role": user.role
+            "role_id": user.role_id
         },
         ACCESS_TOKEN_EXPIRE_MINUTES
     )
