@@ -3,11 +3,9 @@ from app.database import Base
 
 class User(Base):
     __tablename__ = "users"
-
-    # Primary Key
     id = Column(Integer,primary_key=True,index=True)
-    
-    full_name = Column(String(100),nullable=False)
+    first_name = Column(String(50), nullable=False)
+    last_name = Column(String(50), nullable=False)
     username = Column(String(100),unique=True,index=True,nullable=False)
     email = Column(String(100),unique=True,index=True,nullable=False)
     password = Column(String(255),nullable=False)

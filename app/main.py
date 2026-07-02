@@ -6,6 +6,7 @@ from app.routers import auth_router
 from app.routers import ProfilePhoto_router
 from app.routers import sidebar_router
 from fastapi.staticfiles import StaticFiles
+# from app.routers.user_router import user_router
 
 
 # This all table i am importing Temporarily import in main.py because i don't have router
@@ -64,6 +65,7 @@ def on_startup():
 app.include_router(auth_router.router)
 app.include_router(ProfilePhoto_router.router)
 app.include_router(sidebar_router.router)
+# app.include_router(user_router.route)
 
 # Root Endpoint
 @app.get("/")
