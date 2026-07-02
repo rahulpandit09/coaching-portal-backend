@@ -3,8 +3,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
 from app.routers import auth_router
-from app.routers import profile_router
+from app.routers import ProfilePhoto_router
 from app.routers import sidebar_router
+from fastapi.staticfiles import StaticFiles
+# from app.routers.user_router import user_router
 
 
 # This all table i am importing Temporarily import in main.py because i don't have router
@@ -16,6 +18,12 @@ from app.models.role_menu import RoleMenu
 app = FastAPI(
     title="Coaching Portal API'S",
     openapi_version="3.0.3"
+)
+
+app.mount(
+    "/uploads",
+    StaticFiles(directory="uploads"),
+    name="uploads"
 )
 
 # CORS Configuration
@@ -55,8 +63,9 @@ def on_startup():
 
 # Include Routers
 app.include_router(auth_router.router)
-app.include_router(profile_router.router)
+app.include_router(ProfilePhoto_router.router)
 app.include_router(sidebar_router.router)
+# app.include_router(user_router.route)
 
 # Root Endpoint
 @app.get("/")
