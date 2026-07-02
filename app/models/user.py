@@ -3,6 +3,10 @@ from app.database import Base
 
 class User(Base):
     __tablename__ = "users"
+<<<<<<< HEAD
+
+=======
+>>>>>>> f8662615bf9aeb01458b261e43862730cb340793
     id = Column(Integer,primary_key=True,index=True)
     first_name = Column(String(50), nullable=False)
     last_name = Column(String(50), nullable=False)
