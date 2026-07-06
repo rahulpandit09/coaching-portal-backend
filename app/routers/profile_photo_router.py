@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, UploadFile, File
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.services.ProfilePhoto_router import upload_profile_photo_service, delete_profile_photo_service
+from app.services.profile_photo_service import upload_profile_photo_service, delete_profile_photo_service
 
 router = APIRouter(
     prefix="/api/User",

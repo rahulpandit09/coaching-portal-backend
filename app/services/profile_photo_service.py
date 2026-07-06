@@ -1,4 +1,4 @@
-from app.crud.ProfilePhoto_router import update_profile, delete_profile_image
+from app.crud.profile_photo_crud import update_profile, delete_profile_image
 
 
 def upload_profile_photo_service(db, role_id, file):

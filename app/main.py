@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
 from app.routers import auth_router
-from app.routers import ProfilePhoto_router
+from app.routers import profile_photo_router
 from app.routers import sidebar_router
 from fastapi.staticfiles import StaticFiles
 # from app.routers.user_router import user_router
@@ -63,7 +63,7 @@ def on_startup():
 
 # Include Routers
 app.include_router(auth_router.router)
-app.include_router(ProfilePhoto_router.router)
+app.include_router(profile_photo_router.router)
 app.include_router(sidebar_router.router)
 # app.include_router(user_router.route)
 
