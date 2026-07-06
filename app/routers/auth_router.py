@@ -94,5 +94,11 @@ def logout():
 
 
 @router.post("/refresh")
-def refresh():
-    return refresh_token_service()
+def refresh(
+    refreshToken: str,
+    db: Session = Depends(get_db)
+):
+    return refresh_token_service(
+        refreshToken,
+        db
+    )

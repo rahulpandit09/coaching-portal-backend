@@ -1,144 +1,7 @@
-# # app/services/auth_service.py
-
-# from fastapi import HTTPException
-# from datetime import datetime
-# from sqlalchemy.orm import Session
-# from fastapi.security import OAuth2PasswordRequestForm
-# from app.schemas.user_schema import UserCreate
-
-# from app.crud.auth_crud import (
-#     get_user_by_email_or_username,
-#     create_new_user,
-#     get_role_by_name
-# )
-
-# from app.utils.hashing import (
-#     hash_password,
-#     verify_password
-# )
-
-# from app.utils.token import (
-#     create_access_token,
-#     create_refresh_token
-# )
-
-# from app.core.config import ACCESS_TOKEN_EXPIRE_MINUTES
-
-
-# def register_service(
-#         db: Session,
-#         user: UserCreate
-# ):
-
-#     student_role = get_role_by_name(
-#         db,
-#         "Student"
-#     )
-
-#     existing_user = get_user_by_email_or_username(
-#         db,
-#         user.email
-#     )
-#     role_id = student_role.id
-
-#     if existing_user:
-#         raise HTTPException(
-#             status_code=400,
-#             detail="User already exists"
-#         )
-
-#     user_data = {
-#         "first_name": user.first_name,
-#         "last_name": user.last_name,
-#         "username": user.username,
-#         "email": user.email,
-#         "password": hash_password(user.password),
-#         "role_id": role_id
-#     }
-
-#     new_user = create_new_user(
-#         db,
-#         user_data
-#     )
-
-#     return {
-#     "message": "User registered successfully",
-#     "user": {
-#         "id": new_user.id,
-#         "first_name": new_user.first_name,
-#         "last_name": new_user.last_name,
-#         "email": new_user.email
-#     }
-# }
-
-
-# def login_service(
-#         db: Session,
-#         form_data: OAuth2PasswordRequestForm
-# ):
-
-#     user = get_user_by_email_or_username(
-#         db,
-#         form_data.username
-#     )
-
-#     if not user:
-#         raise HTTPException(
-#             status_code=401,
-#             detail="Invalid credentials"
-#         )
-
-#     if not verify_password(
-#             form_data.password,
-#             user.password
-#     ):
-#         raise HTTPException(
-#             status_code=401,
-#             detail="Invalid credentials"
-#         )
-
-#     user.last_login = datetime.now()
-#     db.commit()
-
-#     access_token = create_access_token(
-#         {
-#             "user_id": user.id,
-#             "role_id": user.role_id
-#         },
-#         ACCESS_TOKEN_EXPIRE_MINUTES
-#     )
-
-#     refresh_token = create_refresh_token(
-#         {
-#             "user_id": user.id
-#         }
-#     )
-
-#     return {
-#     "statusCode": 200,
-#     "statusMessage": "Login successful",
-#     "user": {
-#         "id": user.id,
-#         "first_name": user.first_name,
-#         "last_name": user.last_name,
-#         "full_name": f"{user.first_name} {user.last_name}",
-#         "email": user.email,
-#         "role_id": user.role_id
-#     },
-#     "tokens": {
-#         "access_token": access_token,
-#         "refresh_token": refresh_token
-#     }
-# }
-
-
-
-# app/services/auth_service.py
-
 import random
-
+from app.crud.auth_crud import get_user_by_id
+from app.utils.token import verify_refresh_token
 from datetime import datetime, timedelta
-
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
@@ -427,8 +290,55 @@ def logout_service():
     }
 
 
-def refresh_token_service():
+def refresh_token_service(
+        refresh_token: str,
+        db: Session
+):
+
+    payload = verify_refresh_token(
+        refresh_token
+    )
+
+    if not payload:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid refresh token"
+        )
+
+
+    user_id = payload.get(
+        "user_id"
+    )
+
+    if not user_id:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid token payload"
+        )
+
+
+    user = get_user_by_id(
+        db,
+        user_id
+    )
+
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="User not found"
+        )
+
+
+    new_access_token = create_access_token(
+        {
+            "user_id": user.id,
+            "role_id": user.role_id
+        },
+        ACCESS_TOKEN_EXPIRE_MINUTES
+    )
+
 
     return {
-        "message": "Refresh token logic here"
+        "access_token": new_access_token,
+        "token_type": "bearer"
     }
