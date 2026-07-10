@@ -76,7 +76,8 @@ def update_profile(db, role_id, full_name=None, file=None):
 
         return {
             "id": user.id,
-            "full_name": user.full_name,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
             "email": user.email,
             "profile_image": user.profile_image
         }
@@ -137,7 +138,9 @@ def delete_profile_image(db, role_id):
 
         db.commit()
 
-        return True
+        return {
+            "message": "Profile photo deleted successfully"
+        }
 
     except Exception as e:
 

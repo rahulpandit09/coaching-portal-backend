@@ -1,11 +1,15 @@
-from sqlalchemy import Column, String, Boolean, ForeignKey
-from app.core.dependencies import Base
+from sqlalchemy import Column, String, Boolean, ForeignKey, Integer
+from sqlalchemy.orm import relationship
+from app.database import Base
 
-class Role_Submenu(Base):
-    __tablename__ = "role_submenu"
+class RoleSubMenu(Base):
+    __tablename__ = "RoleSubMenu"
 
     id = Column(Integer, primary_key=True)
     role_id = Column(Integer, ForeignKey("role.id"))
-    submenus_id = Column(Integer, ForeignKey("submenus.id"))
-    
+    submenu_id = Column(Integer, ForeignKey("submenus.id"))
+
+
+    role = relationship("Role", back_populates="role_submenus")
+    submenu = relationship("SubMenu", back_populates="roles")
 

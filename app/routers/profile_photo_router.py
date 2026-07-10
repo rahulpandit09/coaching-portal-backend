@@ -5,12 +5,12 @@ from app.database import get_db
 from app.services.profile_photo_service import upload_profile_photo_service, delete_profile_photo_service
 
 router = APIRouter(
-    prefix="/api/User",
-    tags=["Profile Photo"]
+    prefix="/profile-photo",
+    tags=["Profile"]
 )
 
 
-@router.post("/upload-profile-photo/{roleId}")
+@router.post("/upload/{roleId}")
 def upload_profile_photo(
     roleId: int,
     file: UploadFile = File(...),

@@ -11,7 +11,8 @@ from app.schemas.user_schema import UserCreate
 from app.schemas.auth_schema import (
     ForgotPasswordRequest,
     VerifyOtpRequest,
-    ResetPasswordRequest
+    ResetPasswordRequest,
+    RefreshTokenRequest
 )
 
 from app.services.auth_service import (
@@ -95,10 +96,10 @@ def logout():
 
 @router.post("/refresh")
 def refresh(
-    refreshToken: str,
+    request: RefreshTokenRequest,
     db: Session = Depends(get_db)
 ):
     return refresh_token_service(
-        refreshToken,
+        request.refresh_token,
         db
     )
