@@ -8,6 +8,5 @@ class RoleMenu(Base):
     role_id = Column(Integer, ForeignKey("role.id"), nullable=False)
     menu_id = Column(Integer, ForeignKey("menu.id"), nullable=False)
 
-
     role = relationship("Role", back_populates="role_menus")
     menu = relationship("Menu", back_populates="roles")

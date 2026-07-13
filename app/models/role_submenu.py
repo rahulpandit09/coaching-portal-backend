@@ -7,9 +7,7 @@ class RoleSubMenu(Base):
 
     id = Column(Integer, primary_key=True)
     role_id = Column(Integer, ForeignKey("role.id"))
-    submenu_id = Column(Integer, ForeignKey("submenus.id"))
-
-
+    submenu_id = Column(Integer, ForeignKey("submenus.submenu_id"))
     role = relationship("Role", back_populates="role_submenus")
     submenu = relationship("SubMenu", back_populates="roles")
 

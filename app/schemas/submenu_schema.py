@@ -1,4 +1,5 @@
 from pydantic import BaseModel, ConfigDict
+from typing import Optional
 
 class SubMenuCreate(BaseModel):
     menu_id: int
@@ -7,17 +8,19 @@ class SubMenuCreate(BaseModel):
     icon: str | None = None
     order_index: int = 1
     status: bool = True
-    parent_id: int
 
-class subMenuUpdate(BaseModel):
+class SubMenuUpdate(BaseModel):
     title: str
     path: str | None = None
     icon: str | None = None
     order_index: int = 1
     status: bool = True
 
-class subMenuResponse(BaseModel):
-    id: int
+class MessageResponse(BaseModel):
+    message: str
+
+class SubMenuResponse(BaseModel):
+    submenu_id: int
     menu_id: int
     title: str
     path: str | None = None
@@ -25,8 +28,8 @@ class subMenuResponse(BaseModel):
     order_index: int
     status: bool
 
-    model_config = ConfigDict(from_attribute=True)
+    model_config = ConfigDict(from_attributes=True)
 
 class SubMenuListResponse(BaseModel):
     count: int
-    data: list[subMenuResponse]
+    data: list[SubMenuResponse]

@@ -5,7 +5,7 @@ from app.database import Base
 class SubMenu(Base):
     __tablename__ =  "submenus"
 
-    id = Column(Integer, primary_key=True)
+    submenu_id = Column(Integer, primary_key=True)
     menu_id = Column(Integer, ForeignKey("menu.id"))
     title = Column(String, nullable=False)
     path = Column(String)

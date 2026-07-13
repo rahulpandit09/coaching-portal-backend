@@ -15,7 +15,7 @@ from app.services.menu_service import (
     delete_menu_service
 )
 
-router = APIRouter(prefix="/menus", tags=["Menus"])
+router = APIRouter(prefix="/menu", tags=["Menu"])
 
 #Create Menu
 @router.post("/", response_model=MenuResponse)
