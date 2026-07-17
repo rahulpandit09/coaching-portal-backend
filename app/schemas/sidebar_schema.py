@@ -5,7 +5,7 @@ from typing import Optional, List
 class SidebarResponse(BaseModel):
     id: int
     title: str
-    route: Optional[str]
+    path: Optional[str]
     icon: Optional[str]
     child: Optional[List['SidebarResponse']] = []
 

@@ -45,7 +45,7 @@ Coaching Portal Team
 
         server.quit()
 
-        print("Email sent successfully")
+        # print("Email sent successfully")
 
     except Exception as e:
         print("Email sending failed:", e)

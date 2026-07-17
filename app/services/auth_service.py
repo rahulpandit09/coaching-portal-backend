@@ -72,8 +72,8 @@ def register_service(
 
     if not student_role:
         raise HTTPException(
-            status_code=500,
-            detail="Student role not found"
+            status_code=404,
+            detail="Student Role Not Found"
         )
 
 
@@ -283,7 +283,7 @@ def reset_password_service(
     }
 
 
-def logout_service():
+def logout_service(current_user):
 
     return {
         "message": "Logout successful"

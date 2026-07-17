@@ -1,5 +1,6 @@
 from sqlalchemy import (Column,Integer,String,DateTime,Boolean,ForeignKey)
 from app.database import Base
+from sqlalchemy.orm import relationship
 
 class User(Base):
     __tablename__ = "users"
@@ -17,3 +18,5 @@ class User(Base):
     otp_verified = Column( Boolean,default=False)
     profile_image = Column(String,nullable=True)
     last_login = Column(DateTime,nullable=True)
+
+    role = relationship("Role", back_populates="users")

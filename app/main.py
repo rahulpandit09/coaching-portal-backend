@@ -2,18 +2,18 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
+import app.models
 from app.routers import auth_router
 from app.routers import profile_photo_router
 from app.routers import sidebar_router
 from fastapi.staticfiles import StaticFiles
-# from app.routers.user_router import user_router
+#This is all Menu and subMenu all related Side bar 
+from app.routers.menu_router import router as menu_router
+from app.routers.submenu_router import router as submenu_router
+from app.routers.permission_router import router as permission_router
+from app.routers.role_router import router as role_router
 
 
-# This all table i am importing Temporarily import in main.py because i don't have router
-from app.models.user import User
-from app.models.role import Role
-from app.models.menu import Menu
-from app.models.role_menu import RoleMenu
 
 app = FastAPI(
     title="Coaching Portal API'S",
@@ -65,6 +65,10 @@ def on_startup():
 app.include_router(auth_router.router)
 app.include_router(profile_photo_router.router)
 app.include_router(sidebar_router.router)
+app.include_router(menu_router)
+app.include_router(submenu_router)
+app.include_router(permission_router)
+app.include_router(role_router)
 # app.include_router(user_router.route)
 
 # Root Endpoint
