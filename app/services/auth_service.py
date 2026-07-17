@@ -283,7 +283,7 @@ def reset_password_service(
     }
 
 
-def logout_service():
+def logout_service(current_user):
 
     return {
         "message": "Logout successful"

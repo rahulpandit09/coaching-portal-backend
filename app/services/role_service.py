@@ -22,15 +22,14 @@ def create_role_service(db: Session, db_role:RoleCreate):
         )
     return create_role(db, db_role)
 
-def create_role_by_name_service(db: Session, Role: RoleCreate):
-    existing_role = get_role_by_name(db, Role.name)
-    if existing_role:
+def get_role_by_name_service(db: Session, role_name: str):
+    role = get_role_by_name(db, role_name)
+    if not role:
         raise HTTPException(
-            status_code = status.HTTP_400_BAD_REQUEST,
-            detail=f"Role with name {Role.name} already exists"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Role with name {role_name} not found"
         )
-
-    return create_role(db, role)
+    return role
 
 def get_role_by_id_service(db: Session, role_id: int):
     role = get_role_by_id(db, role_id)

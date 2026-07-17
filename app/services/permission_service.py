@@ -21,7 +21,7 @@ def creat_permission_service(db: Session, permission: PermissionCreate):
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="peermission already exists"
         )
-    return creat_permission(db, permission)
+    return create_permission(db, permission)
 
 #get permission by id 
 def get_permission_by_id_service(db: Session, permission_id: int):

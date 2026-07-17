@@ -3,8 +3,8 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
-
 from app.database import get_db
+from app.core.security import get_current_user
 
 from app.schemas.user_schema import UserCreate
 
@@ -90,8 +90,8 @@ def reset_password(
 
 
 @router.post("/logout")
-def logout():
-    return logout_service()
+def logout(current_user=Depends(get_current_user)):
+    return logout_service(current_user)
 
 
 @router.post("/refresh")

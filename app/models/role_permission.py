@@ -3,7 +3,7 @@ from app.database import Base
 from sqlalchemy.orm import relationship
 
 class RolePermission(Base):
-    __tablename__ = "RolePermission"
+    __tablename__ = "role_permission"
 
     id = Column(Integer, primary_key=True)
     role_id = Column(Integer, ForeignKey("role.id"))

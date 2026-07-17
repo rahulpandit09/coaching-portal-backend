@@ -9,8 +9,8 @@ from app.schemas.role_schema import(
 )
 from app.services.role_service import (
     create_role_service,
-    create_role_by_name_service,
     get_role_by_id_service,
+    get_role_by_name_service,
     get_all_roles_service,
     update_role_service,
     delete_role_service
@@ -29,7 +29,7 @@ def get_roles(db: Session = Depends(get_db)):
     return get_all_roles_service(db)
 
 #get role by id
-@router.get("/{role_id}",response_model=RoleCreate)
+@router.get("/{role_id}",response_model=RoleResponse)
 def get_role(role_id: int, db: Session = Depends(get_db)):
     return get_role_by_id_service(db, role_id)
 
@@ -44,6 +44,6 @@ def delete_role(role_id: int, db: Session = Depends(get_db)):
     return delete_role_service(db, role_id)
 
 #role by name 
-@router.get("/{role_name}",response_model=RoleResponse)
+@router.get("/name/{role_name}",response_model=RoleResponse)
 def get_role_by_name(role_name: str, db: Session = Depends(get_db)):
-    return get_role_by_name(db, role_name)
+    return get_role_by_name_service(db, role_name)

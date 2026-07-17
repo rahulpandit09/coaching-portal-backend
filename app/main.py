@@ -2,22 +2,11 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
+import app.models
 from app.routers import auth_router
 from app.routers import profile_photo_router
 from app.routers import sidebar_router
 from fastapi.staticfiles import StaticFiles
-# from app.routers.user_router import user_router
-
-# This all table i am importing Temporarily import in main.py because i don't have router
-from app.models.user import User
-from app.models.role import Role
-from app.models.menu import Menu
-from app.models.role_menu import RoleMenu
-from app.models.permission import Permission
-from app.models.role_permission import RolePermission
-from app.models.submenu import SubMenu
-from app.models.role_submenu import RoleSubMenu
-
 #This is all Menu and subMenu all related Side bar 
 from app.routers.menu_router import router as menu_router
 from app.routers.submenu_router import router as submenu_router

@@ -6,12 +6,15 @@ from app.schemas.permission_schema import (
 )
 
 def create_permission(db: Session, permission: PermissionCreate):
-    db_permission = permission(name = permission.name, code = permission.code)
-    db.add(db_permission)
-    db.commit()
-    db.refresh(db_permission)
-
-    return(db_permission)
+    db_permission = Permission(name = permission.name, code = permission.code)
+    try:
+        db.add(db_permission)
+        db.commit()
+        db.refresh(db_permission)
+        return(db_permission)
+    except Exception as e:
+        db.rollback()
+        raise e
 
 def get_permission_by_id(db: Session, permission_id: int):
     return (db.query(Permission).filter(Permission.id == permission_id).first())
@@ -25,12 +28,19 @@ def get_all_permission(db: Session):
 def update_permission(db: Session, db_permission: Permission, permission: PermissionUpdate):
     db_permission.name = permission.name
     db_permission.code = permission.code
-    db.commit()
-    db.refresh(db_permission)
-    return db_permission
+    try:
+        db.commit()
+        db.refresh(db_permission)
+        return db_permission
+    except Exception as e:
+        db.rollback()
+        raise e
 
 def delete_permission(db: Session, db_permission: Permission):
-    db.delete(db_permission)
-    db.commit()
-
-    return(True)
+    try:
+        db.delete(db_permission)
+        db.commit()
+        return(True)
+    except Exception as e:
+        db.rollback()
+        raise e

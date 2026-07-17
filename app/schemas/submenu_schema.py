@@ -1,32 +1,36 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional
+from datetime import datetime
 
 class SubMenuCreate(BaseModel):
     menu_id: int
-    title: str
-    path: str | None = None
-    icon: str | None = None
-    order_index: int = 1
+    title: str = Field(..., max_length=100)
+    path: str | None = Field(default=None, max_length=100)
+    icon: str | None = Field(default=None, max_length=50)
+    order_index: int = 0
     status: bool = True
 
 class SubMenuUpdate(BaseModel):
-    title: str
-    path: str | None = None
-    icon: str | None = None
-    order_index: int = 1
-    status: bool = True
+    title: str | None = Field(default=None, max_length=100)
+    path: str | None = Field(default=None, max_length=100)
+    icon: str | None = Field(default=None, max_length=50)
+    order_index: int | None = None
+    status: bool | None = None
+    menu_id: int | None = None
 
 class MessageResponse(BaseModel):
     message: str
 
 class SubMenuResponse(BaseModel):
-    submenu_id: int
+    id: int
     menu_id: int
     title: str
     path: str | None = None
     icon: str | None = None
     order_index: int
     status: bool
+    created_at: datetime
+    updated_at: datetime | None = None
 
     model_config = ConfigDict(from_attributes=True)
 
