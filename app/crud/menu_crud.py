@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.menu import Menu
+from app.models.submenu import SubMenu
 from app.schemas.menu_schema import (
     MenuCreate,
     MenuUpdate
@@ -26,7 +27,6 @@ def create_menu(db: Session, menu: MenuCreate):
 def get_menu_by_id(db: Session, menu_id: int):
     return db.query(Menu).filter(Menu.id == menu_id, Menu.is_deleted == False).first()
 
-
 def get_all_menu(db: Session):
     return db.query(Menu).filter(Menu.is_deleted == False).order_by(Menu.order_index).all()
 
@@ -45,8 +45,9 @@ def update_menu(db: Session, db_menu: Menu, menu: MenuUpdate):
 
 def delete_menu(db: Session, db_menu: Menu):
     try:
-        # Soft delete
+        # Soft delete menu and associated submenus
         db_menu.is_deleted = True
+        db.query(SubMenu).filter(SubMenu.menu_id == db_menu.id).update({"is_deleted": True})
         db.commit()
         return True
     except Exception as e:
