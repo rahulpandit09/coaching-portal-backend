@@ -1,5 +1,6 @@
 from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
+from app.schemas.submenu_schema import SubMenuResponse
 
 class MenuCreate(BaseModel):
     title: str = Field(..., max_length=100)
@@ -27,6 +28,7 @@ class MenuResponse(BaseModel):
     order_index: int
     created_at: datetime
     updated_at: datetime | None = None
+    submenu: list[SubMenuResponse] = []
 
     model_config = ConfigDict(from_attributes=True)
 

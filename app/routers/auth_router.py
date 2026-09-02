@@ -12,7 +12,8 @@ from app.schemas.auth_schema import (
     ForgotPasswordRequest,
     VerifyOtpRequest,
     ResetPasswordRequest,
-    RefreshTokenRequest
+    RefreshTokenRequest,
+    TokenResponse
 )
 
 from app.services.auth_service import (
@@ -22,7 +23,8 @@ from app.services.auth_service import (
     verify_otp_service,
     reset_password_service,
     logout_service,
-    refresh_token_service
+    refresh_token_service,
+    get_me_service
 )
 
 router = APIRouter(
@@ -42,7 +44,7 @@ def register(
     )
 
 
-@router.post("/login")
+@router.post("/login", response_model=TokenResponse)
 def login(
         form_data: OAuth2PasswordRequestForm = Depends(),
         db: Session = Depends(get_db)
@@ -103,3 +105,8 @@ def refresh(
         request.refresh_token,
         db
     )
+
+
+@router.get("/get-all-users")
+def get_me(current_user=Depends(get_current_user)):
+    return get_me_service(current_user)

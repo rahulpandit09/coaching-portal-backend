@@ -9,7 +9,7 @@ from app.schemas.submenu_schema import (
     SubMenuListResponse,
     MessageResponse
 )
-from app.services.submenu_services import (
+from app.services.submenu_service import (
     create_submenu_service,
     get_submenu_by_id_service,
     get_all_submenu_service,
@@ -35,7 +35,7 @@ def get_all_submenu(db: Session = Depends(get_db), current_user = Depends(get_cu
     return get_all_submenu_service(db)
 
 #update submenu
-@router.put("/{submenu_id}", response_model=MessageResponse)
+@router.put("/{submenu_id}", response_model=SubMenuResponse)
 def update_submenu(submenu_id: int, submenu: SubMenuUpdate, db: Session = Depends(get_db), current_user = Depends(get_current_user)):
     return update_submenu_service(db, submenu_id, submenu)
 
