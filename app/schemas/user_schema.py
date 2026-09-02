@@ -17,6 +17,7 @@ class UserOut(BaseModel):
     username: Optional[str] = None
     email: EmailStr
     profile_image: Optional[str] = None
+    aadhaar_card: Optional[str] = None
     role_id: Optional[int] = None
     role: Optional[str] = None
 

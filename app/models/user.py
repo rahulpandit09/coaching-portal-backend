@@ -17,6 +17,31 @@ class User(Base):
     otp_expiry = Column( DateTime,nullable=True)
     otp_verified = Column( Boolean,default=False)
     profile_image = Column(String(500), nullable=True)
+    aadhaar_card = Column(String(500), nullable=True)
     last_login = Column(DateTime,nullable=True)
 
-    role = relationship("Role", back_populates="users")
+    role = relationship(
+        "Role",
+        back_populates="users"
+    )
+
+    student_details = relationship(
+        "StudentDetail",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan"
+    )
+
+    teacher_details = relationship(
+        "TeacherDetail",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan"
+    )
+
+    parent_details = relationship(
+        "ParentDetail",
+        back_populates="user",
+        uselist=False,
+        cascade="all, delete-orphan"
+    )
