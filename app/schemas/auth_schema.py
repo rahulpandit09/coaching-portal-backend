@@ -1,6 +1,8 @@
 # app/schemas/auth_schema.py
 
+from typing import Optional
 from pydantic import BaseModel, EmailStr, Field
+from app.schemas.user_schema import UserOut
 
 
 class ForgotPasswordRequest(BaseModel):
@@ -22,6 +24,7 @@ class TokenResponse(BaseModel):
     access_token: str
     refresh_token: str
     token_type: str
+    user: Optional[UserOut] = None
 
 class RefreshTokenRequest(BaseModel):
     refresh_token: str

@@ -65,17 +65,17 @@ def register_service(
         )
 
 
-    student_role = get_role_by_name(
+    target_role_name = user.role_name or "Student"
+    assigned_role = get_role_by_name(
         db,
-        "Student"
+        target_role_name
     )
 
-    if not student_role:
+    if not assigned_role:
         raise HTTPException(
             status_code=404,
-            detail="Student Role Not Found"
+            detail=f"Role '{target_role_name}' Not Found"
         )
-
 
     user_data = {
         "first_name": user.first_name,
@@ -85,8 +85,9 @@ def register_service(
         "password": hash_password(
             user.password
         ),
-        "role_id": student_role.id
+        "role_id": assigned_role.id
     }
+
 
 
     create_new_user(
@@ -146,7 +147,17 @@ def login_service(
     return {
         "access_token": access_token,
         "refresh_token": refresh_token,
-        "token_type": "bearer"
+        "token_type": "bearer",
+        "user": {
+            "id": user.id,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "username": user.username,
+            "email": user.email,
+            "profile_image": user.profile_image,
+            "role_id": user.role_id,
+            "role": user.role.name if user.role else None
+        }
     }
 
 
@@ -287,6 +298,19 @@ def logout_service(current_user):
 
     return {
         "message": "Logout successful"
+    }
+
+
+def get_me_service(current_user):
+    return {
+        "id": current_user.id,
+        "first_name": current_user.first_name,
+        "last_name": current_user.last_name,
+        "username": current_user.username,
+        "email": current_user.email,
+        "profile_image": current_user.profile_image,
+        "role_id": current_user.role_id,
+        "role": current_user.role.name if current_user.role else None
     }
 
 
