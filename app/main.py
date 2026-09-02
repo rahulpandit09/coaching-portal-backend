@@ -1,29 +1,22 @@
 import os
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import Base, engine
 import app.models
 from app.routers import auth_router
 from app.routers import profile_photo_router
 from app.routers import sidebar_router
-from fastapi.staticfiles import StaticFiles
+from app.routers import user_router
 #This is all Menu and subMenu all related Side bar 
 from app.routers.menu_router import router as menu_router
 from app.routers.submenu_router import router as submenu_router
 from app.routers.permission_router import router as permission_router
 from app.routers.role_router import router as role_router
 
-
-
 app = FastAPI(
     title="Coaching Portal API'S",
     openapi_version="3.0.3"
-)
-
-app.mount(
-    "/uploads",
-    StaticFiles(directory="uploads"),
-    name="uploads"
 )
 
 # CORS Configuration
@@ -56,6 +49,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Ensure uploads directory exists and mount static files
+os.makedirs("uploads/profile_images", exist_ok=True)
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
 # Create Tables on Startup
 @app.on_event("startup")
 def on_startup():
@@ -69,7 +66,7 @@ app.include_router(menu_router)
 app.include_router(submenu_router)
 app.include_router(permission_router)
 app.include_router(role_router)
-# app.include_router(user_router.route)
+app.include_router(user_router.router)
 
 # Root Endpoint
 @app.get("/")
@@ -78,4 +75,4 @@ def root():
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok"}
+    return {"status": "ok"}

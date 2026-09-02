@@ -1,4 +1,4 @@
-from sqlalchemy import (Column,Integer,String,DateTime,Boolean,ForeignKey)
+from sqlalchemy import (Column, Integer, String, Text, DateTime, Boolean, ForeignKey)
 from app.database import Base
 from sqlalchemy.orm import relationship
 
@@ -16,7 +16,7 @@ class User(Base):
     otp_code = Column(String(6),nullable=True)
     otp_expiry = Column( DateTime,nullable=True)
     otp_verified = Column( Boolean,default=False)
-    profile_image = Column(String,nullable=True)
+    profile_image = Column(String(500), nullable=True)
     last_login = Column(DateTime,nullable=True)
 
     role = relationship("Role", back_populates="users")

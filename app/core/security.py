@@ -43,35 +43,51 @@ def get_current_user(
     return user
 
 def tutor_required(user: User = Depends(get_current_user)):
-    if user.role_id != 1:
+    role_name = user.role.name if user.role else None
+    if role_name not in ["Tutor", "Admin"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Tutor only"
+            detail="Tutor or Admin only"
         )
     return user
 
 
 def teacher_required(user: User = Depends(get_current_user)):
-    if user.role_id != 2:
+    role_name = user.role.name if user.role else None
+    if role_name not in ["Teacher", "Admin"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Teacher only"
+            detail="Teacher or Admin only"
         )
     return user
 
+
 def parent_required(user: User = Depends(get_current_user)):
-    if user.role_id != 3:
+    role_name = user.role.name if user.role else None
+    if role_name not in ["Parent", "Admin"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Parent only"
+            detail="Parent or Admin only"
         )
     return user
 
 
 def student_required(user: User = Depends(get_current_user)):
-    if user.role_id != 4:
+    role_name = user.role.name if user.role else None
+    if role_name not in ["Student", "Admin"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail="Student only"
+            detail="Student or Admin only"
         )
     return user
+
+
+def admin_required(user: User = Depends(get_current_user)):
+    role_name = user.role.name if user.role else None
+    if role_name != "Admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Admin only"
+        )
+    return user
+

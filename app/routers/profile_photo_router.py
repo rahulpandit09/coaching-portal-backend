@@ -10,16 +10,16 @@ router = APIRouter(
 )
 
 
-@router.post("/upload/{roleId}")
+@router.post("/upload/{userId}")
 def upload_profile_photo(
-    roleId: int,
+    userId: int,
     file: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
 
     user = upload_profile_photo_service(
         db,
-        roleId,
+        userId,
         file
     )
 
@@ -29,15 +29,34 @@ def upload_profile_photo(
     }
 
 
-@router.delete("/delete-profile-photo/{roleId}")
+@router.put("/upload/{userId}")
+def update_profile_photo(
+    userId: int,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+
+    user = upload_profile_photo_service(
+        db,
+        userId,
+        file
+    )
+
+    return {
+        "message": "Profile photo updated successfully",
+        "data": user
+    }
+
+
+@router.delete("/delete-profile-photo/{userId}")
 def delete_profile_photo(
-    roleId: int,
+    userId: int,
     db: Session = Depends(get_db)
 ):
 
     delete_profile_photo_service(
         db,
-        roleId
+        userId
     )
 
     return {
