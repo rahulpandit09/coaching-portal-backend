@@ -80,43 +80,28 @@ def get_user_kpi_stats(db: Session) -> Dict[str, int]:
     """
     Get user counts for KPI cards:
     - total_users: All users in the database
-    - students: Users with role 'student' or having a StudentDetail record
-    - teachers: Users with role 'teacher' or having a TeacherDetail record
-    - parents: Users with role 'parent' or having a ParentDetail record
+    - students: Users with role 'student'
+    - teachers: Users with role 'teacher'
+    - parents: Users with role 'parent'
     """
     total_users = db.query(func.count(User.id)).scalar() or 0
 
-    students_count = db.query(func.count(User.id.distinct())).outerjoin(
+    students_count = db.query(func.count(User.id)).join(
         Role, User.role_id == Role.id
-    ).outerjoin(
-        StudentDetail, User.id == StudentDetail.user_id
     ).filter(
-        or_(
-            func.lower(Role.name).like("%student%"),
-            StudentDetail.id.isnot(None)
-        )
+        func.lower(Role.name).like("%student%")
     ).scalar() or 0
 
-    teachers_count = db.query(func.count(User.id.distinct())).outerjoin(
+    teachers_count = db.query(func.count(User.id)).join(
         Role, User.role_id == Role.id
-    ).outerjoin(
-        TeacherDetail, User.id == TeacherDetail.user_id
     ).filter(
-        or_(
-            func.lower(Role.name).like("%teacher%"),
-            TeacherDetail.id.isnot(None)
-        )
+        func.lower(Role.name).like("%teacher%")
     ).scalar() or 0
 
-    parents_count = db.query(func.count(User.id.distinct())).outerjoin(
+    parents_count = db.query(func.count(User.id)).join(
         Role, User.role_id == Role.id
-    ).outerjoin(
-        ParentDetail, User.id == ParentDetail.user_id
     ).filter(
-        or_(
-            func.lower(Role.name).like("%parent%"),
-            ParentDetail.id.isnot(None)
-        )
+        func.lower(Role.name).like("%parent%")
     ).scalar() or 0
 
     return {
