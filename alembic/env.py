@@ -7,6 +7,7 @@ from alembic import context
 from app.database import Base
 
 # import all models
+import app.models
 from app.models.user import User
 from app.models.role import Role
 from app.models.menu import Menu
@@ -15,6 +16,9 @@ from app.models.submenu import SubMenu
 from app.models.permission import Permission
 from app.models.role_permission import RolePermission
 from app.models.role_submenu import RoleSubMenu
+from app.models.userManagement.student import StudentDetail
+from app.models.userManagement.teacher import TeacherDetail
+from app.models.userManagement.parent import ParentDetail
 
 
 
