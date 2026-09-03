@@ -18,7 +18,8 @@ from app.crud.auth_crud import (
     update_password,
     clear_otp,
     get_role_by_name,
-    get_user_by_username
+    get_user_by_username,
+    get_all_users
 )
 
 from app.utils.hashing import (
@@ -148,16 +149,7 @@ def login_service(
         "access_token": access_token,
         "refresh_token": refresh_token,
         "token_type": "bearer",
-        "user": {
-            "id": user.id,
-            "first_name": user.first_name,
-            "last_name": user.last_name,
-            "username": user.username,
-            "email": user.email,
-            "profile_image": user.profile_image,
-            "role_id": user.role_id,
-            "role": user.role.name if user.role else None
-        }
+        "user": user
     }
 
 
@@ -302,16 +294,12 @@ def logout_service(current_user):
 
 
 def get_me_service(current_user):
-    return {
-        "id": current_user.id,
-        "first_name": current_user.first_name,
-        "last_name": current_user.last_name,
-        "username": current_user.username,
-        "email": current_user.email,
-        "profile_image": current_user.profile_image,
-        "role_id": current_user.role_id,
-        "role": current_user.role.name if current_user.role else None
-    }
+    return current_user
+
+
+def get_all_users_service(db: Session):
+    return get_all_users(db)
+
 
 
 def refresh_token_service(

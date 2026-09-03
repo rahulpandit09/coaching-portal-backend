@@ -1,12 +1,11 @@
-# app/routers/auth_router.py
-
+from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from app.database import get_db
 from app.core.security import get_current_user
 
-from app.schemas.user_schema import UserCreate
+from app.schemas.user_schema import UserCreate, UserOut
 
 from app.schemas.auth_schema import (
     ForgotPasswordRequest,
@@ -24,7 +23,8 @@ from app.services.auth_service import (
     reset_password_service,
     logout_service,
     refresh_token_service,
-    get_me_service
+    get_me_service,
+    get_all_users_service
 )
 
 router = APIRouter(
@@ -107,6 +107,15 @@ def refresh(
     )
 
 
-@router.get("/get-all-users")
+@router.get("/me", response_model=UserOut)
 def get_me(current_user=Depends(get_current_user)):
     return get_me_service(current_user)
+
+
+@router.get("/get-all-users", response_model=List[UserOut])
+def get_all_users(
+    db: Session = Depends(get_db),
+    current_user=Depends(get_current_user)
+):
+    return get_all_users_service(db)
+
