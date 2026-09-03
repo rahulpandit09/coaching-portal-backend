@@ -140,3 +140,7 @@ def get_role_by_name(
     return db.query(Role).filter(
         Role.name == name
     ).first()
+
+
+def get_all_users(db: Session):
+    return db.query(User).all()

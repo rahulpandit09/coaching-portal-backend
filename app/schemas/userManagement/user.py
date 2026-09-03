@@ -1,5 +1,5 @@
-from pydantic import BaseModel, EmailStr, Field
-from typing import Optional
+from pydantic import BaseModel, EmailStr, Field, field_validator
+from typing import Optional, Any
 from datetime import datetime
 
 from .student import StudentDetailCreate, StudentDetailUpdate, StudentDetailOut
@@ -54,6 +54,7 @@ class UserOut(BaseModel):
     username: Optional[str] = None
     email: EmailStr
     role_id: Optional[int] = None
+    role: Optional[str] = None
     profile_image: Optional[str] = None
     aadhaar_card: Optional[str] = None
     last_login: Optional[datetime] = None
@@ -62,6 +63,15 @@ class UserOut(BaseModel):
     student_details: Optional[StudentDetailOut] = None
     teacher_details: Optional[TeacherDetailOut] = None
     parent_details: Optional[ParentDetailOut] = None
+
+    @field_validator('role', mode='before')
+    @classmethod
+    def extract_role_name(cls, v: Any) -> Optional[str]:
+        if hasattr(v, 'name'):
+            return v.name
+        if isinstance(v, str):
+            return v
+        return None
 
     class Config:
         from_attributes = True
