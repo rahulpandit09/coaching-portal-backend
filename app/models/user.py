@@ -9,6 +9,7 @@ class User(Base):
     last_name = Column(String(50), nullable=False)
     username = Column(String(100),unique=True,index=True,nullable=False)
     email = Column(String(100),unique=True,index=True,nullable=False)
+    phone_number = Column(String(20), nullable=True)
     password = Column(String(255),nullable=False)
     role_id = Column(Integer,ForeignKey("role.id"),nullable=False)
     reset_token = Column(String,nullable=True)
