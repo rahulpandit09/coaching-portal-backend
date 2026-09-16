@@ -3,7 +3,7 @@ services:
     name: coaching-portal-backend
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python create_admin.py && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    startCommand: alembic upgrade head && python create_admin.py && uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: DATABASE_URL
         fromDatabase:

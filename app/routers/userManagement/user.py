@@ -20,13 +20,65 @@ from app.crud.userManagement.user import (
     update_user_with_details,
     delete_user,
     upload_user_aadhaar_card,
-    save_aadhaar_file
+    save_aadhaar_file,
+    generate_student_id,
+    generate_employee_id
 )
 
 router = APIRouter(
     prefix="/user-management/users",
     tags=["User Management"]
 )
+
+
+@router.post("/generate-student-id")
+@router.get("/generate-student-id")
+def get_generated_student_id(
+    student_code: str = "CS",
+    db: Session = Depends(get_db)
+):
+    """
+    Generate a preview unique Student ID before form submission (e.g. STU-CS-A7B3-2026).
+    """
+    clean_code = (student_code or "CS").strip()
+    student_id = generate_student_id(db=db, student_code=clean_code)
+    return {"student_id": student_id, "id": student_id}
+
+
+@router.post("/generate-employee-id")
+@router.get("/generate-employee-id")
+def get_generated_employee_id(
+    db: Session = Depends(get_db)
+):
+    """
+    Generate a preview unique Employee ID before form submission (e.g. EMP-A7B3-2026).
+    """
+    employee_id = generate_employee_id(db=db)
+    return {"employee_id": employee_id, "id": employee_id}
+
+
+@router.post("/generate-id")
+def generate_user_id_endpoint(
+    role: str = Query(..., description="Role type: student or teacher"),
+    student_code: str = "CS",
+    db: Session = Depends(get_db)
+):
+    """
+    Unified endpoint to generate a preview unique ID for Student or Teacher before form submission.
+    """
+    clean_role = role.lower().strip()
+    clean_code = (student_code or "CS").strip()
+    if clean_role == "student":
+        sid = generate_student_id(db=db, student_code=clean_code)
+        return {"id": sid, "student_id": sid, "role": "student"}
+    elif clean_role in ("teacher", "tutor", "employee"):
+        eid = generate_employee_id(db=db)
+        return {"id": eid, "employee_id": eid, "role": "teacher"}
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid role for ID generation. Must be 'student' or 'teacher'."
+        )
 
 
 @router.get("/kpi", response_model=UserKPICardResponse)

@@ -12,6 +12,7 @@ class UserCreate(BaseModel):
     username: str
     email: EmailStr
     phone_number: Optional[str] = None
+    gender: Optional[str] = None
     password: str = Field(min_length=6, max_length=72)
     role_name: Optional[str] = "Student"
 
@@ -23,6 +24,7 @@ class UserOut(BaseModel):
     username: Optional[str] = None
     email: EmailStr
     phone_number: Optional[str] = None
+    gender: Optional[str] = None
     profile_image: Optional[str] = None
     aadhaar_card: Optional[str] = None
     role_id: Optional[int] = None

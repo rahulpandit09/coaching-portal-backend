@@ -19,23 +19,36 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    # Clear legacy Base64 string data or values exceeding 500 chars before altering column
-    op.execute("UPDATE users SET profile_image = NULL WHERE profile_image LIKE 'data:image%' OR length(profile_image) > 500")
+    bind = op.get_bind()
+    inspector = sa.inspect(bind)
+    tables = inspector.get_table_names()
 
-    op.alter_column(
-        'users',
-        'profile_image',
-        type_=sa.String(length=500),
-        existing_type=sa.Text(),
-        existing_nullable=True
-    )
+    if 'users' in tables:
+        user_cols = [c['name'] for c in inspector.get_columns('users')]
+        if 'profile_image' in user_cols:
+            # Clear legacy Base64 string data or values exceeding 500 chars before altering column
+            op.execute("UPDATE users SET profile_image = NULL WHERE profile_image LIKE 'data:image%' OR length(profile_image) > 500")
+            op.alter_column(
+                'users',
+                'profile_image',
+                type_=sa.String(length=500),
+                existing_type=sa.Text(),
+                existing_nullable=True
+            )
 
 
 def downgrade() -> None:
-    op.alter_column(
-        'users',
-        'profile_image',
-        type_=sa.Text(),
-        existing_type=sa.String(length=500),
-        existing_nullable=True
-    )
+    bind = op.get_bind()
+    inspector = sa.inspect(bind)
+    tables = inspector.get_table_names()
+
+    if 'users' in tables:
+        user_cols = [c['name'] for c in inspector.get_columns('users')]
+        if 'profile_image' in user_cols:
+            op.alter_column(
+                'users',
+                'profile_image',
+                type_=sa.Text(),
+                existing_type=sa.String(length=500),
+                existing_nullable=True
+            )

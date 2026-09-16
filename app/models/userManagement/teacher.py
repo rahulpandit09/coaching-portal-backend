@@ -29,7 +29,8 @@ class TeacherDetail(Base):
     employee_id = Column(
         String(100),
         unique=True,
-        nullable=True
+        nullable=True,
+        index=True
     )
 
     qualification = Column(

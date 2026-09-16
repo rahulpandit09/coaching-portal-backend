@@ -29,6 +29,7 @@ class TeacherDetailUpdate(BaseModel):
 class TeacherDetailOut(TeacherDetailBase):
     id: int
     user_id: int
+    employee_id: Optional[str] = None
 
     class Config:
         from_attributes = True
