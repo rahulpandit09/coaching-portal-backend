@@ -12,6 +12,7 @@ class UserBase(BaseModel):
     last_name: str
     username: str
     email: EmailStr
+    phone_number: Optional[str] = None
     role_id: int
 
 
@@ -20,6 +21,7 @@ class UserCreate(BaseModel):
     last_name: str
     username: str
     email: EmailStr
+    phone_number: Optional[str] = None
     password: str = Field(min_length=6, max_length=72)
     role_id: int
     profile_image: Optional[str] = None
@@ -36,6 +38,7 @@ class UserUpdate(BaseModel):
     last_name: Optional[str] = None
     username: Optional[str] = None
     email: Optional[EmailStr] = None
+    phone_number: Optional[str] = None
     password: Optional[str] = Field(default=None, min_length=6, max_length=72)
     role_id: Optional[int] = None
     profile_image: Optional[str] = None
@@ -53,6 +56,7 @@ class UserOut(BaseModel):
     last_name: str
     username: Optional[str] = None
     email: EmailStr
+    phone_number: Optional[str] = None
     role_id: Optional[int] = None
     role: Optional[str] = None
     profile_image: Optional[str] = None

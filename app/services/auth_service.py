@@ -83,6 +83,7 @@ def register_service(
         "last_name": user.last_name,
         "username": user.username,
         "email": user.email,
+        "phone_number": user.phone_number,
         "password": hash_password(
             user.password
         ),

@@ -45,7 +45,8 @@ def get_users(
                 User.first_name.ilike(search_filter),
                 User.last_name.ilike(search_filter),
                 User.username.ilike(search_filter),
-                User.email.ilike(search_filter)
+                User.email.ilike(search_filter),
+                User.phone_number.ilike(search_filter)
             )
         )
 
@@ -69,7 +70,8 @@ def get_total_users_count(
                 User.first_name.ilike(search_filter),
                 User.last_name.ilike(search_filter),
                 User.username.ilike(search_filter),
-                User.email.ilike(search_filter)
+                User.email.ilike(search_filter),
+                User.phone_number.ilike(search_filter)
             )
         )
 
@@ -122,6 +124,7 @@ def create_user_with_details(db: Session, user_in: UserCreate) -> User:
         "last_name": user_in.last_name,
         "username": user_in.username,
         "email": user_in.email,
+        "phone_number": user_in.phone_number,
         "password": hash_password(user_in.password),
         "role_id": user_in.role_id,
         "profile_image": user_in.profile_image,
