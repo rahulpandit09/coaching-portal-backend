@@ -40,7 +40,8 @@ class StudentDetail(Base):
     student_id = Column(
         String(100),
         unique=True,
-        nullable=True
+        nullable=True,
+        index=True
     )
 
     school_name = Column(

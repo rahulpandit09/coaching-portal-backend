@@ -1,5 +1,8 @@
 import os
 import uuid
+import secrets
+import string
+from datetime import datetime
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import or_, func
@@ -12,6 +15,34 @@ from app.models.userManagement.teacher import TeacherDetail
 from app.models.userManagement.parent import ParentDetail
 from app.schemas.userManagement.user import UserCreate, UserUpdate
 from app.utils.hashing import hash_password
+
+
+def generate_alphanumeric_code(length: int = 4) -> str:
+    """Generate cryptographically secure uppercase alphanumeric string."""
+    characters = string.ascii_uppercase + string.digits
+    return "".join(secrets.choice(characters) for _ in range(length))
+
+
+def generate_student_id(db: Session, student_code: str = "CS") -> str:
+    """Generate unique student ID formatted as STU-<CODE>-<RANDOM4>-<YEAR>"""
+    year = datetime.now().year
+    while True:
+        random_code = generate_alphanumeric_code(4)
+        student_id = f"STU-{student_code}-{random_code}-{year}"
+        existing = db.query(StudentDetail).filter(StudentDetail.student_id == student_id).first()
+        if not existing:
+            return student_id
+
+
+def generate_employee_id(db: Session) -> str:
+    """Generate unique employee ID formatted as EMP-<RANDOM4>-<YEAR>"""
+    year = datetime.now().year
+    while True:
+        random_code = generate_alphanumeric_code(4)
+        employee_id = f"EMP-{random_code}-{year}"
+        existing = db.query(TeacherDetail).filter(TeacherDetail.employee_id == employee_id).first()
+        if not existing:
+            return employee_id
 
 
 def get_user_by_id(db: Session, user_id: int) -> Optional[User]:
@@ -125,6 +156,7 @@ def create_user_with_details(db: Session, user_in: UserCreate) -> User:
         "username": user_in.username,
         "email": user_in.email,
         "phone_number": user_in.phone_number,
+        "gender": user_in.gender,
         "password": hash_password(user_in.password),
         "role_id": user_in.role_id,
         "profile_image": user_in.profile_image,
@@ -135,21 +167,43 @@ def create_user_with_details(db: Session, user_in: UserCreate) -> User:
     db.add(db_user)
     db.flush()  # Populates db_user.id for foreign key references
 
-    # 2. Add role-specific details if provided
-    if user_in.student_details:
-        student_data = user_in.student_details.model_dump(exclude_unset=True)
+    # 2. Query the selected role
+    role = db.query(Role).filter(Role.id == user_in.role_id).first()
+    if not role:
+        raise HTTPException(status_code=400, detail="Invalid role_id")
+
+    role_name = role.name.lower().strip()
+
+    # 3. Handle role-specific details strictly by role
+    if role_name == "student":
+        student_data = user_in.student_details.model_dump(exclude_unset=True) if user_in.student_details else {}
+        provided_id = student_data.get("student_id")
+        if provided_id:
+            existing = db.query(StudentDetail).filter(StudentDetail.student_id == provided_id).first()
+            if existing:
+                student_data["student_id"] = generate_student_id(db=db, student_code="CS")
+        else:
+            student_data["student_id"] = generate_student_id(db=db, student_code="CS")
         db_student = StudentDetail(user_id=db_user.id, **student_data)
         db.add(db_student)
 
-    if user_in.teacher_details:
-        teacher_data = user_in.teacher_details.model_dump(exclude_unset=True)
+    elif role_name in ("teacher", "tutor"):
+        teacher_data = user_in.teacher_details.model_dump(exclude_unset=True) if user_in.teacher_details else {}
+        provided_id = teacher_data.get("employee_id")
+        if provided_id:
+            existing = db.query(TeacherDetail).filter(TeacherDetail.employee_id == provided_id).first()
+            if existing:
+                teacher_data["employee_id"] = generate_employee_id(db=db)
+        else:
+            teacher_data["employee_id"] = generate_employee_id(db=db)
         db_teacher = TeacherDetail(user_id=db_user.id, **teacher_data)
         db.add(db_teacher)
 
-    if user_in.parent_details:
-        parent_data = user_in.parent_details.model_dump(exclude_unset=True)
-        db_parent = ParentDetail(user_id=db_user.id, **parent_data)
-        db.add(db_parent)
+    elif role_name == "parent":
+        if user_in.parent_details:
+            parent_data = user_in.parent_details.model_dump(exclude_unset=True)
+            db_parent = ParentDetail(user_id=db_user.id, **parent_data)
+            db.add(db_parent)
 
     db.commit()
     db.refresh(db_user)
