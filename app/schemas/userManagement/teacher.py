@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional
 
 
@@ -27,9 +27,8 @@ class TeacherDetailUpdate(BaseModel):
 
 
 class TeacherDetailOut(TeacherDetailBase):
-    id: int
-    user_id: int
-    employee_id: Optional[str] = None
+    teacherDetailId: int = Field(validation_alias="id")
+    userId: int = Field(validation_alias="user_id")
+    employeeId: Optional[str] = Field(default=None, validation_alias="employee_id")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)

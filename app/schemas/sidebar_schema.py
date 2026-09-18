@@ -2,15 +2,15 @@ from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional, List
 
 class SidebarSubmenuResponse(BaseModel):
-    id: int
+    subMenuId: int = Field(validation_alias="id")
     title: str
     path: Optional[str] = None
     icon: Optional[str] = None
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
 
 class SidebarResponse(BaseModel):
-    id: int
+    menuId: int = Field(validation_alias="id")
     title: str
     path: Optional[str] = None
     icon: Optional[str] = None

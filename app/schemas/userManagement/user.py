@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, Field, field_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 from typing import Optional, Any
 from datetime import datetime
 
@@ -54,14 +54,14 @@ class UserUpdate(BaseModel):
 
 
 class UserOut(BaseModel):
-    id: int
+    userId: int = Field(validation_alias="id")
     first_name: str
     last_name: str
     username: Optional[str] = None
     email: EmailStr
     phone_number: Optional[str] = None
     gender: Optional[str] = None
-    role_id: Optional[int] = None
+    roleId: Optional[int] = Field(default=None, validation_alias="role_id")
     role: Optional[str] = None
     profile_image: Optional[str] = None
     aadhaar_card: Optional[str] = None
@@ -81,8 +81,7 @@ class UserOut(BaseModel):
             return v
         return None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
 
 
 class UserKPICardResponse(BaseModel):
