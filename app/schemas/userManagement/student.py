@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional
 from datetime import date
 
@@ -42,9 +42,8 @@ class StudentDetailUpdate(BaseModel):
 
 
 class StudentDetailOut(StudentDetailBase):
-    id: int
-    user_id: int
-    student_id: Optional[str] = None
+    studentDetailId: int = Field(validation_alias="id")
+    userId: int = Field(validation_alias="user_id")
+    studentId: Optional[str] = Field(default=None, validation_alias="student_id")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)

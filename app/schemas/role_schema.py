@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 #Create Role
 
@@ -13,10 +13,10 @@ class RoleUpdate(BaseModel):
 #Response Role
 
 class RoleResponse(BaseModel):
-    id: int
+    roleId: int = Field(validation_alias="id")
     name: str
 
-    model_config = ConfigDict(from_attribute=True)
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
 
 #List Response
 class RoleListResponse(BaseModel):

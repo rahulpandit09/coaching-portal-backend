@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Optional
 
 
@@ -21,8 +21,7 @@ class ParentDetailUpdate(BaseModel):
 
 
 class ParentDetailOut(ParentDetailBase):
-    id: int
-    user_id: int
+    parentDetailId: int = Field(validation_alias="id")
+    userId: int = Field(validation_alias="user_id")
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)

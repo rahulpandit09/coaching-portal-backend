@@ -22,17 +22,17 @@ class MessageResponse(BaseModel):
     message: str
 
 class SubMenuResponse(BaseModel):
-    id: int
-    menu_id: int
+    subMenuId: int = Field(validation_alias="id")
+    menuId: int = Field(validation_alias="menu_id")
     title: str
     path: str | None = None
     icon: str | None = None
-    order_index: int
-    status: bool
-    created_at: datetime
-    updated_at: datetime | None = None
+    orderIndex: int = Field(default=0, validation_alias="order_index")
+    status: bool = True
+    createdAt: datetime = Field(validation_alias="created_at")
+    updatedAt: datetime | None = Field(default=None, validation_alias="updated_at")
 
-    model_config = ConfigDict(from_attributes=True)
+    model_config = ConfigDict(from_attributes=True, populate_by_name=True)
 
 class SubMenuListResponse(BaseModel):
     count: int
