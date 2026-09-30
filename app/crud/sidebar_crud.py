@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from app.models.menu import Menu
 from app.models.submenu import SubMenu
 from app.models.role_menu import RoleMenu
+from app.models.role_submenu import RoleSubMenu
 
 
 def get_sidebar_by_role(
@@ -9,9 +10,9 @@ def get_sidebar_by_role(
     role_id: int
 ):
     # Check if specific role-menu mappings exist for this role
-    has_role_mapping = db.query(RoleMenu).filter(RoleMenu.role_id == role_id).first()
+    has_role_menu_mapping = db.query(RoleMenu).filter(RoleMenu.role_id == role_id).first()
 
-    if has_role_mapping:
+    if has_role_menu_mapping:
         menus = (
             db.query(Menu)
             .join(
@@ -38,12 +39,20 @@ def get_sidebar_by_role(
             .all()
         )
 
-    # Filter each menu's submenus to only include active and non-deleted submenus
+    # Check if specific role-submenu mappings exist for this role
+    has_role_submenu_mapping = db.query(RoleSubMenu).filter(RoleSubMenu.role_id == role_id).first()
+    allowed_submenu_ids = set()
+    if has_role_submenu_mapping:
+        allowed_submenu_ids = {
+            rsm.submenu_id for rsm in db.query(RoleSubMenu.submenu_id).filter(RoleSubMenu.role_id == role_id).all()
+        }
+
+    # Filter each menu's submenus to only include active, non-deleted, and authorized submenus
     for menu in menus:
         if menu.submenu:
             menu.submenu = [
                 sm for sm in menu.submenu 
-                if sm.status and not sm.is_deleted
+                if sm.status and not sm.is_deleted and (not has_role_submenu_mapping or sm.id in allowed_submenu_ids)
             ]
 
-    return menus
+    return menus

@@ -3,8 +3,10 @@ from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from app.database import Base
 
+
 class Menu(Base):
     __tablename__ = "menu"
+
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(100), nullable=False, unique=True)
     path = Column(String(100), nullable=True, unique=True)
@@ -20,4 +22,4 @@ class Menu(Base):
 
     submenu = relationship("SubMenu", back_populates="menu", cascade="all, delete-orphan")
     roles = relationship("RoleMenu", back_populates="menu", cascade="all, delete-orphan")
-    parent = relationship("Menu", remote_side=[id])
+    parent = relationship("Menu", remote_side=[id])
