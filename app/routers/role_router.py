@@ -1,11 +1,13 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.schemas.role_schema import(
+from app.schemas.role_schema import (
     RoleCreate,
     RoleUpdate,
     RoleResponse,
-    RoleListResponse
+    RoleListResponse,
+    RoleAccessResponse,
+    RoleAccessUpdate
 )
 from app.services.role_service import (
     create_role_service,
@@ -15,35 +17,57 @@ from app.services.role_service import (
     update_role_service,
     delete_role_service
 )
+from app.services.role_access_service import (
+    get_role_access_service,
+    update_role_access_service
+)
 
 router = APIRouter(prefix="/roles", tags=["Roles"])
 
-#create role
-@router.post("/",response_model=RoleResponse)
+
+# Create role
+@router.post("/", response_model=RoleResponse)
 def create_role(role: RoleCreate, db: Session = Depends(get_db)):
     return create_role_service(db, role)
 
-#get all router
+
+# Get all roles
 @router.get("/", response_model=RoleListResponse)
 def get_roles(db: Session = Depends(get_db)):
     return get_all_roles_service(db)
 
-#get role by id
-@router.get("/{role_id}",response_model=RoleResponse)
+
+# Role by name
+@router.get("/name/{role_name}", response_model=RoleResponse)
+def get_role_by_name(role_name: str, db: Session = Depends(get_db)):
+    return get_role_by_name_service(db, role_name)
+
+
+# Get role access (menus, submenus, permissions)
+@router.get("/{role_id}/access", response_model=RoleAccessResponse)
+def get_role_access(role_id: int, db: Session = Depends(get_db)):
+    return get_role_access_service(db, role_id)
+
+
+# Update role access (assign/update menus, submenus, permissions)
+@router.put("/{role_id}/access", response_model=RoleAccessResponse)
+def update_role_access(role_id: int, access_data: RoleAccessUpdate, db: Session = Depends(get_db)):
+    return update_role_access_service(db, role_id, access_data)
+
+
+# Get role by id
+@router.get("/{role_id}", response_model=RoleResponse)
 def get_role(role_id: int, db: Session = Depends(get_db)):
     return get_role_by_id_service(db, role_id)
 
-#update role 
+
+# Update role 
 @router.put("/{role_id}", response_model=RoleResponse)
 def update_role(role_id: int, role: RoleUpdate, db: Session = Depends(get_db)):
     return update_role_service(db, role_id, role)
 
-#Delete role
+
+# Delete role
 @router.delete("/{role_id}")
 def delete_role(role_id: int, db: Session = Depends(get_db)):
-    return delete_role_service(db, role_id)
-
-#role by name 
-@router.get("/name/{role_name}",response_model=RoleResponse)
-def get_role_by_name(role_name: str, db: Session = Depends(get_db)):
-    return get_role_by_name_service(db, role_name)
+    return delete_role_service(db, role_id)

@@ -1,13 +1,17 @@
-from sqlalchemy import Column, Integer, ForeignKey, String
-from app.database import Base
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
+from app.database import Base
+
 
 class Permission(Base):
     __tablename__ = "permission"
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    code = Column(String)
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(100), nullable=False)
+    code = Column(String(100), unique=True, nullable=False)
 
-    roles = relationship("RolePermission", back_populates="permission", cascade="all, delete")
-    
+    roles = relationship(
+        "RolePermission",
+        back_populates="permission",
+        cascade="all, delete-orphan"
+    )

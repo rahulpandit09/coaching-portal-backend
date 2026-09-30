@@ -8,7 +8,23 @@ class Role(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(50), unique=True, nullable=False)
+
     users = relationship("User", back_populates="role")
-    role_menus = relationship("RoleMenu",back_populates="role",cascade="all, delete")
-    permission = relationship("RolePermission", back_populates="role",cascade="all, delete")
-    role_submenus = relationship("RoleSubMenu",back_populates="role",cascade="all, delete")
+
+    role_menus = relationship(
+        "RoleMenu",
+        back_populates="role",
+        cascade="all, delete-orphan"
+    )
+
+    permissions = relationship(
+        "RolePermission",
+        back_populates="role",
+        cascade="all, delete-orphan"
+    )
+
+    role_submenus = relationship(
+        "RoleSubMenu",
+        back_populates="role",
+        cascade="all, delete-orphan"
+    )

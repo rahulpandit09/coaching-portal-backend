@@ -8,7 +8,7 @@ from app.schemas.permission_schema import (
     PermissionUpdate
 )
 from app.services.permission_service import (
-    creat_permission_service,
+    create_permission_service,
     get_permission_by_id_service,
     get_all_permission_service,
     get_permission_by_code_service,
@@ -18,32 +18,38 @@ from app.services.permission_service import (
 
 router = APIRouter(prefix="/permissions", tags=["Permissions"])
 
-#Create Permission
+
+# Create Permission
 @router.post("/", response_model=PermissionResponse)
 def create_permission(permission: PermissionCreate, db: Session = Depends(get_db)):
-    return creat_permission_service(db, permission)
+    return create_permission_service(db, permission)
 
-# get_permission_by_id
-@router.get("/{permission_id}", response_model=PermissionResponse)
-def get_permission_by_id(permission_id: int, db: Session = Depends(get_db)):
-    return get_permission_by_id_service(db, permission_id)
 
-#get_all_permission
+# Get all permissions
 @router.get("/", response_model=PermissionListResponse)
 def get_all_permission(db: Session = Depends(get_db)):
     return get_all_permission_service(db)
 
-#get_permission_by_code
-@router.get("/{permission_code}", response_model=PermissionResponse)
+
+# Get permission by id
+@router.get("/id/{permission_id}", response_model=PermissionResponse)
+def get_permission_by_id(permission_id: int, db: Session = Depends(get_db)):
+    return get_permission_by_id_service(db, permission_id)
+
+
+# Get permission by code
+@router.get("/code/{permission_code}", response_model=PermissionResponse)
 def get_permission_by_code(permission_code: str, db: Session = Depends(get_db)):
     return get_permission_by_code_service(db, permission_code)
 
-#update_permission
+
+# Update permission
 @router.put("/{permission_id}", response_model=PermissionResponse)
-def update_permission(permission_id: int, permission: PermissionResponse, db: Session = Depends(get_db)):
+def update_permission(permission_id: int, permission: PermissionUpdate, db: Session = Depends(get_db)):
     return update_permission_service(db, permission_id, permission)
 
-#delete_permission
-@router.delete("/{permission_id}",)
+
+# Delete permission
+@router.delete("/{permission_id}")
 def delete_permission(permission_id: int, db: Session = Depends(get_db)):
-    return delete_permission_service(db, permission_id)
+    return delete_permission_service(db, permission_id)
