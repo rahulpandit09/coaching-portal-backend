@@ -15,9 +15,9 @@ from app.routers.permission_router import router as permission_router
 from app.routers.role_router import router as role_router
 from app.routers.userManagement import (
     user_management_router,
-    student_management_router,
-    teacher_management_router,
-    parent_management_router,
+    # student_management_router,
+    # teacher_management_router,
+    # parent_management_router,
 )
 
 app = FastAPI(
@@ -86,9 +86,9 @@ app.include_router(permission_router)
 app.include_router(role_router)
 app.include_router(user_router.router)
 app.include_router(user_management_router)
-app.include_router(student_management_router)
-app.include_router(teacher_management_router)
-app.include_router(parent_management_router)
+# app.include_router(student_management_router)
+# app.include_router(teacher_management_router)
+# app.include_router(parent_management_router)
 
 # Root Endpoint
 @app.get("/")
@@ -97,4 +97,4 @@ def root():
 
 @app.get("/health")
 def health_check():
-    return {"status": "ok"}
+    return {"status": "ok"}

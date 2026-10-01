@@ -44,6 +44,22 @@ def generate_employee_id(db: Session) -> str:
         if not existing:
             return employee_id
 
+def generate_parent_id(db: Session) -> str:
+    """Generate unique parent ID formatted as PAR-<RANDOM5>-<YEAR>"""
+    year = datetime.now().year
+    while True:
+        random_code = generate_alphanumeric_code(5)
+        parent_id = f"PAR-{random_code}-{year}"
+
+        existing = (
+            db.query(ParentDetail)
+            .filter(ParentDetail.parent_id == parent_id)
+            .first()
+        )   
+        if not existing:
+            return parent_id
+            
+
 
 def get_user_by_id(db: Session, user_id: int) -> Optional[User]:
     return db.query(User).filter(User.id == user_id).first()
@@ -200,10 +216,17 @@ def create_user_with_details(db: Session, user_in: UserCreate) -> User:
         db.add(db_teacher)
 
     elif role_name == "parent":
-        if user_in.parent_details:
-            parent_data = user_in.parent_details.model_dump(exclude_unset=True)
-            db_parent = ParentDetail(user_id=db_user.id, **parent_data)
-            db.add(db_parent)
+        parent_data = (
+            user_in.parent_details.model_dump(exclude_unset=True)
+            if user_in.parent_details
+            else {}
+        )
+        parent_data["parent_id"] = generate_parent_id(db=db)
+        db_parent = ParentDetail(
+            user_id=db_user.id,
+            **parent_data
+        )
+        db.add(db_parent)
 
     db.commit()
     db.refresh(db_user)
