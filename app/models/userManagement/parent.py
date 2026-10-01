@@ -25,6 +25,13 @@ class ParentDetail(Base):
         unique=True
     )
 
+    parent_id = Column(
+        String(100),
+        unique=True,
+        nullable=True,
+        index=True
+    )
+
     relationship = Column(
         String(50),
         nullable=True

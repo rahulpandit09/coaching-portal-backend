@@ -22,7 +22,8 @@ from app.crud.userManagement.user import (
     upload_user_aadhaar_card,
     save_aadhaar_file,
     generate_student_id,
-    generate_employee_id
+    generate_employee_id,
+    generate_parent_id as generate_parent_id_crud
 )
 
 router = APIRouter(
@@ -57,14 +58,30 @@ def get_generated_employee_id(
     return {"employee_id": employee_id, "id": employee_id}
 
 
+@router.post("/generate-parent-id")
+@router.get("/generate-parent-id")
+def get_generated_parent_id(
+    db: Session = Depends(get_db)
+):
+    """
+    Generate a preview unique Parent ID before form submission.
+    Example: PAR-A7K2B-2026
+    """
+    parent_id = generate_parent_id_crud(db=db)
+    return {
+        "parent_id": parent_id,
+        "id": parent_id
+    }
+
+
 @router.post("/generate-id")
 def generate_user_id_endpoint(
-    role: str = Query(..., description="Role type: student or teacher"),
+    role: str = Query(..., description="Role type: student, teacher or parent"),
     student_code: str = "CS",
     db: Session = Depends(get_db)
 ):
     """
-    Unified endpoint to generate a preview unique ID for Student or Teacher before form submission.
+    Unified endpoint to generate a preview unique ID for Student, Teacher, or Parent before form submission.
     """
     clean_role = role.lower().strip()
     clean_code = (student_code or "CS").strip()
@@ -74,10 +91,13 @@ def generate_user_id_endpoint(
     elif clean_role in ("teacher", "tutor", "employee"):
         eid = generate_employee_id(db=db)
         return {"id": eid, "employee_id": eid, "role": "teacher"}
+    elif clean_role == "parent":
+        pid = generate_parent_id_crud(db=db)
+        return {"id": pid, "parent_id": pid, "role": "parent"}
     else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Invalid role for ID generation. Must be 'student' or 'teacher'."
+            detail="Invalid role for ID generation. Must be 'student', 'teacher', or 'parent'."
         )
 
 
@@ -253,6 +273,7 @@ def upload_aadhaar_document(
         "aadhaar_card": file_url,
         "url": file_url
     }
+
 
 
 @router.post("/{user_id}/upload-aadhaar", response_model=UserOut)
