@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 
 from app.database import get_db
+from app.core.security import get_current_user
 from app.schemas.userManagement.user import (
     UserCreate,
     UserUpdate,
@@ -36,6 +37,7 @@ router = APIRouter(
 @router.get("/generate-student-id")
 def get_generated_student_id(
     student_code: str = "CS",
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
@@ -49,6 +51,7 @@ def get_generated_student_id(
 @router.post("/generate-employee-id")
 @router.get("/generate-employee-id")
 def get_generated_employee_id(
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
@@ -61,6 +64,7 @@ def get_generated_employee_id(
 @router.post("/generate-parent-id")
 @router.get("/generate-parent-id")
 def get_generated_parent_id(
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
@@ -78,6 +82,7 @@ def get_generated_parent_id(
 def generate_user_id_endpoint(
     role: str = Query(..., description="Role type: student, teacher or parent"),
     student_code: str = "CS",
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
@@ -103,6 +108,7 @@ def generate_user_id_endpoint(
 
 @router.get("/kpi", response_model=UserKPICardResponse)
 def get_user_kpi_cards(
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
@@ -121,6 +127,7 @@ def list_users(
     limit: int = Query(100, ge=1, le=500),
     role_id: Optional[int] = Query(None),
     search: Optional[str] = Query(None),
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
@@ -140,6 +147,7 @@ def list_users(
 def count_users(
     role_id: Optional[int] = Query(None),
     search: Optional[str] = Query(None),
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
@@ -152,6 +160,7 @@ def count_users(
 @router.get("/{user_id}", response_model=UserOut)
 def get_user(
     user_id: int,
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
@@ -169,6 +178,7 @@ def get_user(
 @router.post("/", response_model=UserOut, status_code=status.HTTP_201_CREATED)
 def create_user(
     user_in: UserCreate,
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
@@ -203,6 +213,7 @@ def create_user(
 def update_user(
     user_id: int,
     user_in: UserUpdate,
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
@@ -245,6 +256,7 @@ def update_user(
 @router.delete("/{user_id}", status_code=status.HTTP_200_OK)
 def remove_user(
     user_id: int,
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
@@ -261,6 +273,7 @@ def remove_user(
 
 @router.post("/upload-aadhaar-document")
 def upload_aadhaar_document(
+    current_user=Depends(get_current_user),
     file: UploadFile = File(...)
 ):
     """
@@ -277,9 +290,10 @@ def upload_aadhaar_document(
 
 
 @router.post("/{user_id}/upload-aadhaar", response_model=UserOut)
-def upload_aadhaar_for_user(
+def upload_aadhaar_for_user(    
     user_id: int,
     file: UploadFile = File(...),
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """
