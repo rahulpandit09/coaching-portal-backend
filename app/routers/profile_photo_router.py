@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, UploadFile, File
 from sqlalchemy.orm import Session
+from app.core.security import get_current_user
 
 from app.database import get_db
 from app.services.profile_photo_service import upload_profile_photo_service, delete_profile_photo_service
@@ -13,6 +14,7 @@ router = APIRouter(
 @router.post("/upload/{userId}")
 def upload_profile_photo(
     userId: int,
+    current_user=Depends(get_current_user),
     file: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
@@ -32,6 +34,7 @@ def upload_profile_photo(
 @router.put("/upload/{userId}")
 def update_profile_photo(
     userId: int,
+    current_user=Depends(get_current_user),
     file: UploadFile = File(...),
     db: Session = Depends(get_db)
 ):
@@ -51,6 +54,7 @@ def update_profile_photo(
 @router.delete("/delete-profile-photo/{userId}")
 def delete_profile_photo(
     userId: int,
+    current_user=Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
 

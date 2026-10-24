@@ -17,3 +17,7 @@ def get_user_by_id(db, user_id):
         "role": user.role.name if user.role else None
     }
 
+
+def get_all_users(db):
+    return db.query(User).all()
+
