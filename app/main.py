@@ -13,12 +13,27 @@ from app.routers.menu_router import router as menu_router
 from app.routers.submenu_router import router as submenu_router
 from app.routers.permission_router import router as permission_router
 from app.routers.role_router import router as role_router
+
+#User Management 
 from app.routers.userManagement import (
     user_management_router,
     # student_management_router,
     # teacher_management_router,
     # parent_management_router,
 )
+
+# Document Management System
+from app.routers.dms.dms_folder_router import router as dms_folder_router
+from app.routers.dms.dms_sub_folder_router import router as dms_sub_folder_router
+from app.routers.dms.dms_document_router import router as dms_document_router
+from app.routers.dms.dms_publisher_router import router as dms_publisher_router
+from app.routers.dms.dms_group_router import router as dms_group_router
+from app.routers.dms.dms_access_request_router import (
+    router as dms_access_request_router,
+)
+
+from app.routers.dms.dms_ocr_router import router as dms_ocr_router
+from app.routers.dms.dms_chat_router import router as dms_chat_router
 
 app = FastAPI(
     title="Coaching Portal API'S",
@@ -42,6 +57,10 @@ else:
         "http://127.0.0.1:3000",
     ]
 
+from starlette.middleware.base import BaseHTTPMiddleware
+from jose import jwt, JWTError
+from app.core.config import SECRET_KEY, ALGORITHM
+
 # If allowed_origins contains "*", allow_credentials MUST be False.
 allow_credentials = True
 if "*" in allowed_origins:
@@ -54,6 +73,24 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class JWTMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        auth_header = request.headers.get("Authorization")
+        if auth_header and auth_header.lower().startswith("bearer "):
+            token = auth_header[7:].strip()
+            try:
+                payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+                request.state.user = payload
+            except JWTError:
+                request.state.user = None
+        else:
+            request.state.user = None
+        return await call_next(request)
+
+
+app.add_middleware(JWTMiddleware)
 
 # Ensure uploads directory exists and mount static files
 os.makedirs("uploads/profile_images", exist_ok=True)
@@ -82,13 +119,28 @@ app.include_router(profile_photo_router.router)
 app.include_router(sidebar_router.router)
 app.include_router(menu_router)
 app.include_router(submenu_router)
+
+# Role and Permission
 app.include_router(permission_router)
 app.include_router(role_router)
+
+# User Management System
 app.include_router(user_router.router)
 app.include_router(user_management_router)
 # app.include_router(student_management_router)
 # app.include_router(teacher_management_router)
 # app.include_router(parent_management_router)
+
+
+# DMS — Document Management System
+app.include_router(dms_folder_router)
+app.include_router(dms_sub_folder_router)
+app.include_router(dms_document_router)
+app.include_router(dms_publisher_router)
+app.include_router(dms_group_router)
+app.include_router(dms_access_request_router)
+app.include_router(dms_ocr_router)
+app.include_router(dms_chat_router)
 
 # Root Endpoint
 @app.get("/")

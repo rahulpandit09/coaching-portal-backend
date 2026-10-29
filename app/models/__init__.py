@@ -9,3 +9,25 @@ from .role_permission import RolePermission
 from .userManagement.student import StudentDetail
 from .userManagement.teacher import TeacherDetail
 from .userManagement.parent import ParentDetail
+
+# DMS Models
+from .dms import (
+    DmsFolder,
+    DmsFolderHistory,
+    DmsSubFolder,
+    DmsSubFolderHistory,
+    DmsDocument,
+    DmsDocumentHistory,
+    DmsPublisher,
+    DmsPublisherHistory,
+    DmsGroup,
+    DmsGroupHistory,
+    DmsAccessRequest,
+    DmsAccessRequestHistory,
+    DmsChatThread,
+    DmsChatThreadHistory,
+    DmsChatMessage,
+    DmsChatMessageHistory,
+    DmsDocumentOcr,
+    DmsDocumentOcrHistory,
+)
